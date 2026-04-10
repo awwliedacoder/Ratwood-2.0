@@ -247,7 +247,7 @@
 	sound = 'sound/ambience/noises/mystical (4).ogg'
 	invocations = list("Treefather, consecrate this living tree into your eternal embrace!")
 	miracle = TRUE
-	devotion_cost = 50
+	devotion_cost = 1000
 
 /obj/effect/proc_holder/spell/invoked/sanctify_tree/cast(list/targets, mob/living/user)
 	. = ..()
