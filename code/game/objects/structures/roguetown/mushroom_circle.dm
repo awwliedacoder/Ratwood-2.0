@@ -103,6 +103,8 @@ GLOBAL_LIST_EMPTY(mushroom_circles)
 	var/maintenance_elapsed = 0
 	/// TRUE while usable as a portal; set to FALSE when decaying
 	var/active = TRUE
+	/// Timer ID for the final_decay timer so it can be cancelled on Destroy().
+	var/decay_timerid = null
 
 /obj/structure/mushroom_circle/Initialize(mapload)
 	. = ..()
@@ -113,6 +115,9 @@ GLOBAL_LIST_EMPTY(mushroom_circles)
 /obj/structure/mushroom_circle/Destroy()
 	GLOB.mushroom_circles -= src
 	STOP_PROCESSING(SSprocessing, src)
+	if(decay_timerid)
+		deltimer(decay_timerid)
+		decay_timerid = null
 	return ..()
 
 /obj/structure/mushroom_circle/process(dt)
@@ -130,7 +135,7 @@ GLOBAL_LIST_EMPTY(mushroom_circles)
 	icon_state = "mushroomcluster"
 	desc = "A withered ring of mushrooms that has lost its fae connection."
 	visible_message(span_warning("[src] begins to wither — the mystical light flickers and dies."))
-	addtimer(CALLBACK(src, PROC_REF(final_decay)), 10 MINUTES)
+	decay_timerid = addtimer(CALLBACK(src, PROC_REF(final_decay)), 10 MINUTES, flags = TIMER_STOPPABLE)
 
 /obj/structure/mushroom_circle/proc/final_decay()
 	if(QDELETED(src))

@@ -342,6 +342,12 @@
 	/// Reference to the currently summoned lesser dryad.
 	var/mob/living/simple_animal/hostile/retaliate/rogue/fae/dryad/lesser/conjured_dryad = null
 
+/obj/effect/proc_holder/spell/targeted/summon_lesser_dryad/Destroy()
+	if(conjured_dryad && !QDELETED(conjured_dryad))
+		UnregisterSignal(conjured_dryad, COMSIG_QDELETING)
+	conjured_dryad = null
+	return ..()
+
 /obj/effect/proc_holder/spell/targeted/summon_lesser_dryad/cast(list/targets, mob/user = usr)
 	. = ..()
 	if(!istype(user, /mob/living/carbon/human))
@@ -397,8 +403,6 @@
 	invocations = list("Tangle my enemies and sting their feet. Grove, arise!")
 	invocation_type = "shout"
 	range = 10
-	/// Reference back to the conjure spell so we can find the dryad.
-	var/obj/effect/proc_holder/spell/targeted/summon_lesser_dryad/conjure_spell = null
 
 /obj/effect/proc_holder/spell/targeted/lesser_dryad_special/cast(list/targets, mob/user = usr)
 	. = ..()

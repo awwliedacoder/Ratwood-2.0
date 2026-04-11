@@ -560,13 +560,16 @@
 			continue
 		in_range |= H
 	// Remove modifier from mobs that left range or are now Dendor-eligible.
+	// Collect removals first — mutating slowed_mobs during iteration skips elements in BYOND.
+	var/list/to_remove = list()
 	for(var/mob/living/M in tree_data.slowed_mobs)
 		if(QDELETED(M) || !(M in in_range))
 			if(!QDELETED(M))
 				var/datum/status_effect/debuff/sanctified_tree_slow/SE = M.has_status_effect(/datum/status_effect/debuff/sanctified_tree_slow)
 				if(SE)
 					qdel(SE)
-			tree_data.slowed_mobs -= M
+			to_remove += M
+	tree_data.slowed_mobs -= to_remove
 	// Apply/refresh debuff on mobs in range.
 	for(var/mob/living/carbon/human/H in in_range)
 		var/datum/status_effect/debuff/sanctified_tree_slow/SE = H.has_status_effect(/datum/status_effect/debuff/sanctified_tree_slow)
