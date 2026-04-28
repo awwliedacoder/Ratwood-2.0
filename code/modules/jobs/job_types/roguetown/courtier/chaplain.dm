@@ -15,10 +15,9 @@
 	allowed_patrons = COURTCHAPLAIN_PATRONS
 	allowed_sexes = list(MALE, FEMALE)
 	outfit = /datum/outfit/job/roguetown/chaplain
-	tutorial = "The time most acolytes put towards reaching deeper into the divine, you spent gladhanding discrete political deals and studying the land claims and house feuds of the world's noble families. \
-		You may not be as divinely gifted as the church's acolytes in the more... direct ways of magic and miracle, but you suffer well with influence and the city lord's ear instead,  liasing between church and court as advisor and diplomat on spiritual matters. \
-		Some call you a scheming manipulator, twisting the Duke's ear towards the will of the Bishop, a spy on their behalf. Others suspect, in hushed tones, that the Duke may come to prefer your sweet whispers to the Prelate's. \
-		Only when swords are drawn might your true loyalties be discovered."
+	tutorial = "The time most acolytes put towards reaching deeper into the ways of magic and miracle, you spent memorising catechisms, building connections and communicating the good word to those most important. Liasing between church and court as advisor and diplomat on spiritual matters, your task is to negotiate, mediate and advise the court against unpious decisions. \
+Some call you a scheming manipulator, twisting the Duke's ear towards the will of the Bishop, a spy on their behalf. Others suspect, in hushed tones, that the Duke may come to prefer your sweet whispers to the Prelate's. Perhaps you are simply drawn to the safety and luxury of court-living.\
+Only when swords are drawn might your true loyalties be discovered."
 	display_order = JDO_CHAPLAIN
 	give_bank_account = TRUE
 	min_pq = 5
@@ -59,10 +58,9 @@
 
 /datum/advclass/chaplain
 	name = "Court Chaplain"
-	tutorial = "The time most acolytes put towards reaching deeper into the divine, you spent gladhanding discrete political deals, and studying the land claims and house feuds of the world's noble families.\
- You may not be as divinely gifted as the average acolyte in the more... showy ways of magic and miracle, but you suffer well with influence and the city lord's ear instead, liasing between church and court as advisor and diplomat. \
- And is that not the truest form of power? Some call you a scheming manipulator, twisting the Duke's ear towards the will of the Bishop, a spy on their behalf. Others suspect, in hushed tones, that the Duke may come to prefer your sweet whispers to the Prelate's. \
- Only when swords are drawn might your true loyalties be discovered, between church and court."
+	tutorial = "The time most acolytes put towards reaching deeper into the ways of magic and miracle, you spent memorising catechisms, building connections and communicating the good word to those most important. Liasing between church and court as advisor and diplomat on spiritual matters, your task is to negotiate, mediate and advise the court against unpious decisions. \
+Some call you a scheming manipulator, twisting the Duke's ear towards the will of the Bishop, a spy on their behalf. Others suspect, in hushed tones, that the Duke may come to prefer your sweet whispers to the Prelate's. Perhaps you are simply drawn to the safety and luxury of court-living.\
+Only when swords are drawn might your true loyalties be discovered."
 	outfit = /datum/outfit/job/roguetown/chaplain/basic
 	subclass_languages = list(/datum/language/grenzelhoftian)
 	category_tags = list(CTAG_CHAPLAIN)
@@ -70,7 +68,7 @@
 		STATKEY_INT = 3,//court knowledge
 		STATKEY_WIL = 2,
 		STATKEY_PER = 2,//eye for intrigue
-		STATKEY_CON = -1,
+		STATKEY_CON = -1,//scrawny pencil-pusher
 	)
 	subclass_skills = list(
 		/datum/skill/combat/polearms = SKILL_LEVEL_APPRENTICE,
