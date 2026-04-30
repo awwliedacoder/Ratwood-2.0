@@ -3,7 +3,7 @@
 #define MUSIC_MAXLINES 300
 #define MUSIC_MAXLINECHARS 50
 
-var/global/instrument_channel_next = 1008
+GLOBAL_VAR_INIT(instrument_channel_next, CHANNEL_INSTRUMENT_MAX)
 
 /datum/song
 	var/name = "Untitled"
@@ -72,13 +72,13 @@ var/global/instrument_channel_next = 1008
 			LAZYADD(hearing_mobs, M)
 		last_hearcheck = world.time
 
-	if(!instrument_channel_next)
-		instrument_channel_next = CHANNEL_INSTRUMENT_MAX
+	if(!GLOB.instrument_channel_next)
+		GLOB.instrument_channel_next = CHANNEL_INSTRUMENT_MAX
 
-	var/note_channel = instrument_channel_next
-	instrument_channel_next--
-	if(instrument_channel_next < CHANNEL_INSTRUMENT_MIN)
-		instrument_channel_next = CHANNEL_INSTRUMENT_MAX
+	var/note_channel = GLOB.instrument_channel_next
+	GLOB.instrument_channel_next--
+	if(GLOB.instrument_channel_next < CHANNEL_INSTRUMENT_MIN)
+		GLOB.instrument_channel_next = CHANNEL_INSTRUMENT_MAX
 
 	var/sound/music_played = sound(soundfile)
 	for(var/i in hearing_mobs)
