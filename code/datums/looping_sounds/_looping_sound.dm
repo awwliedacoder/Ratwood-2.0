@@ -228,6 +228,12 @@ GLOBAL_LIST_EMPTY(created_sound_groups)
 	if(!L)
 		return
 
+	if(!L["MUTESTATUS"])
+		// Already playing — do not re-send. The sound/S object passed through
+		// playsound() is shared and its x/z reflect the last processed listener's
+		// position. Re-sending here would repan the sound to the wrong tile.
+		return
+
 	L["MUTESTATUS"] = FALSE
 	L["VOL"] = volume
 
