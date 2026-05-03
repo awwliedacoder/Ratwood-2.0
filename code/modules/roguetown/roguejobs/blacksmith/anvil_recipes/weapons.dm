@@ -298,6 +298,11 @@
 	req_blade = /obj/item/blade/iron_sword
 	created_item = /obj/item/rogueweapon/sword/short/messer/iron
 
+/datum/anvil_recipe/weapons/iron/sabre
+	name = "Sabre, Iron"
+	req_blade = /obj/item/blade/iron_sword
+	created_item = /obj/item/rogueweapon/sword/sabre/iron
+
 /datum/anvil_recipe/weapons/iron/dagger
 	name = "Dagger, Iron"
 	req_blade = /obj/item/blade/iron_knife
