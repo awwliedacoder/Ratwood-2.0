@@ -18,7 +18,7 @@
 	category = "Table"
 	result = list(/obj/item/reagent_containers/powder/ozium)
 	reqs = list(/obj/item/ash = 2, /datum/reagent/berrypoison = 2, /obj/item/reagent_containers/food/snacks/grown/rogue/swampweeddry = 1)
-	craftdiff = 3
+	craftdiff = 2
 
 /datum/crafting_recipe/roguetown/alchemy/ozium_3x
 	name = "ozium (x3)"
@@ -27,14 +27,14 @@
 					/obj/item/reagent_containers/powder/ozium,
 					/obj/item/reagent_containers/powder/ozium)
 	reqs = list(/obj/item/ash = 3, /datum/reagent/berrypoison = 3, /obj/item/reagent_containers/food/snacks/grown/rogue/swampweeddry = 2)
-	craftdiff = 4
+	craftdiff = 3
 
 /datum/crafting_recipe/roguetown/alchemy/moon
 	name = "moondust"
 	category = "Table"
 	result = list(/obj/item/reagent_containers/powder/moondust)
 	reqs = list(/obj/item/ash = 2, /obj/item/reagent_containers/food/snacks/grown/rogue/pipeweeddry = 1, /datum/reagent/berrypoison = 2)
-	craftdiff = 3
+	craftdiff = 2
 
 /datum/crafting_recipe/roguetown/alchemy/moon_3x
 	name = "moondust (x3)"
@@ -44,7 +44,7 @@
 					/obj/item/reagent_containers/powder/moondust
 				)
 	reqs = list(/obj/item/ash = 3, /obj/item/reagent_containers/food/snacks/grown/rogue/pipeweeddry = 2, /datum/reagent/berrypoison = 3)
-	craftdiff = 4
+	craftdiff = 3
 
 /datum/crafting_recipe/roguetown/alchemy/salt
 	name = "salt pile"
