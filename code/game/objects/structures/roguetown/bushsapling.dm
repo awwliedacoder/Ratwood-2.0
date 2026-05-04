@@ -63,6 +63,9 @@
 /obj/structure/bush_sapling/proc/on_soil_deleted(datum/source)
 	UnregisterSignal(source, COMSIG_QDELETING)
 	linked_soil = null
+
+/obj/structure/bush_sapling/process(dt)
+	if(dead)
 		return PROCESS_KILL
 
 	if(stage <= BUSHSAP_STAGE_BUDDING)
