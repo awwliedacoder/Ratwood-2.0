@@ -88,11 +88,22 @@
 	START_PROCESSING(SSprocessing, src)
 
 /obj/structure/soil_seedling/Destroy()
+	if(linked_soil && !QDELETED(linked_soil))
+		UnregisterSignal(linked_soil, COMSIG_QDELETING)
+	linked_soil = null
 	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
+/obj/structure/soil_seedling/proc/on_soil_deleted(datum/source)
+	UnregisterSignal(source, COMSIG_QDELETING)
+	linked_soil = null
+
 /obj/structure/soil_seedling/proc/configure_seedling(obj/structure/soil/soil, _seed_icon, _seed_state, _final_type, _grow_duration)
+	if(linked_soil && !QDELETED(linked_soil))
+		UnregisterSignal(linked_soil, COMSIG_QDELETING)
 	linked_soil = soil
+	if(linked_soil)
+		RegisterSignal(linked_soil, COMSIG_QDELETING, PROC_REF(on_soil_deleted))
 	seed_icon = _seed_icon
 	seed_state = _seed_state
 	final_type = _final_type
@@ -103,7 +114,7 @@
 /obj/structure/soil_seedling/process(dt)
 	if(!linked_soil || QDELETED(linked_soil))
 		qdel(src)
-		return
+		return PROCESS_KILL
 	if(linked_soil.water > 0 && linked_soil.nutrition > 0)
 		linked_soil.adjust_water(-dt * soil_water_drain)
 		linked_soil.adjust_nutrition(-dt * soil_nutrition_drain)
@@ -116,6 +127,7 @@
 		icon_state = "sunflower0"
 	if(growth_progress >= grow_duration)
 		bloom()
+		return
 
 /obj/structure/soil_seedling/attackby(obj/item/I, mob/living/user, params)
 	if(linked_soil)

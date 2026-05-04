@@ -41,26 +41,34 @@
 	// Stage-3 loot, mirrors /obj/structure/flora/roguegrass/bush
 	var/bushtype = null
 	var/list/looty = list()
-	var/res_replenish = 0  // world.time threshold for loot refresh
-	var/has_grown = FALSE   // prevents death before first watering
+	/// world.time threshold for loot refresh
+	var/res_replenish = 0
+	/// Prevents death before the sapling has received its first watering
+	var/has_grown = FALSE
 
 /obj/structure/bush_sapling/Initialize(mapload)
 	. = ..()
 	linked_soil = locate(/obj/structure/soil) in get_turf(src)
+	if(linked_soil)
+		RegisterSignal(linked_soil, COMSIG_QDELETING, PROC_REF(on_soil_deleted))
 	START_PROCESSING(SSprocessing, src)
 
 /obj/structure/bush_sapling/Destroy()
+	if(linked_soil && !QDELETED(linked_soil))
+		UnregisterSignal(linked_soil, COMSIG_QDELETING)
+	linked_soil = null
 	STOP_PROCESSING(SSprocessing, src)
 	return ..()
 
-/obj/structure/bush_sapling/process(dt)
-	if(dead)
-		return
+/obj/structure/bush_sapling/proc/on_soil_deleted(datum/source)
+	UnregisterSignal(source, COMSIG_QDELETING)
+	linked_soil = null
+		return PROCESS_KILL
 
 	if(stage <= BUSHSAP_STAGE_BUDDING)
 		if(!linked_soil || QDELETED(linked_soil))
 			wither_and_die()
-			return
+			return PROCESS_KILL
 		if(linked_soil.water > 0 && linked_soil.nutrition > 0)
 			linked_soil.adjust_water(-dt * soil_water_drain)
 			linked_soil.adjust_nutrition(-dt * soil_nutrition_drain)
@@ -70,7 +78,7 @@
 			growth_progress -= dt * 2
 			if(growth_progress <= -BUSHSAP_DEATH_TICKS)
 				wither_and_die()
-				return
+				return PROCESS_KILL
 	else
 		growth_progress += dt
 	var/stage_time = (stage == BUSHSAP_STAGE_MATURE) ? BUSHSAP_HEDGE_TIME : BUSHSAP_STAGE_TIME

@@ -17,7 +17,7 @@
 		src.adjust_skillrank(/datum/skill/combat/unarmed, 3, TRUE)
 		src.adjust_skillrank(/datum/skill/misc/swimming, 2, TRUE)
 		src.adjust_skillrank(/datum/skill/misc/athletics, 4, TRUE)
-		src.adjust_skillrank(/datum/skill/misc/tracking, 4, TRUE) //'Tracker' transformation
+		src.adjust_skillrank(/datum/skill/misc/tracking, 2, TRUE)
 		src.adjust_skillrank(/datum/skill/misc/sneaking, 5, TRUE)
 		src.adjust_skillrank(/datum/skill/misc/climbing, 6, TRUE) //I am in your walls
 //Give it miracles maybe as well if needed, but this boi is already good
@@ -29,6 +29,7 @@
 		update_move_intent_slowdown() // Apply speed changes
 
 		AddSpell(new /obj/effect/proc_holder/spell/self/spiderfangs/mire)
+		AddSpell(new /obj/effect/proc_holder/spell/self/weaveweb)
 		real_name = "lesser mire crawler"
 
 
@@ -45,8 +46,8 @@
 		TRAIT_HARDDISMEMBER, //Decapping causes them to bug out, badly, and need admin intervention to fix. Bandaid fix.
 		TRAIT_PIERCEIMMUNE, //Prevents weapon dusting and caltrop effects due to them transforming when killed/stepping on shards.
 		TRAIT_LONGSTRIDER,
-		TRAIT_INFINITE_ENERGY, //It's a 7 strength spiderling, what's the worst that could happen?
-		TRAIT_PERFECT_TRACKER,
+		TRAIT_LEAPER,
+		TRAIT_WEBWALK, //It IS a spider
 		TRAIT_NIGHT_VISION,
 	)
 	inherent_biotypes = MOB_HUMANOID

@@ -36,8 +36,10 @@
 	/// Whether this recipe will transmit a message in a 7x7 column around the source.
 	var/loud = FALSE
 	//crafting diff, every diff removes 25% chance to craft
-	var/required_tech_node = null // String ID of required tech node, or null if no tech required
-	var/tech_unlocked = TRUE // Set to TRUE when the required tech is unlocked
+	/// String ID of required tech node, or null if no tech required
+	var/required_tech_node = null
+	/// Set to TRUE when the required tech is unlocked
+	var/tech_unlocked = TRUE
 	/// Override the XP amount given on successful craft. -1 means use the default formula (STAINT*2 + craftdiff*10).
 	var/craft_xp_override = -1
 	var/list/cached_display_data
