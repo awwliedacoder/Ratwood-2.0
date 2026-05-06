@@ -83,7 +83,7 @@
 		if (PRESTI_MOTE)
 			extra_fatigue = 15 // same deal here
 		if (PRESTI_SPLASH)
-			extra_fatigue = 20 // one of the most useful effects, stamina cost helps prevent too much spam
+			extra_fatigue = 15 // one of the most useful effects, stamina cost helps prevent too much spam
 
 	user.stamina_add(fatigue_used + extra_fatigue)
 
@@ -184,7 +184,12 @@
 // Intents for prestidigitation
 
 /obj/item/melee/touch_attack/prestidigitation/proc/shoot_water_bolt(mob/living/carbon/human/user, atom/target)
-	if(!ismob(target))
+	// Containers must be refillable and have room
+	if(istype(target, /obj/item/reagent_containers))
+		var/obj/item/reagent_containers/RC = target
+		if(!(RC.reagent_flags & REFILLABLE) || !RC.reagents || RC.reagents.total_volume >= RC.reagents.maximum_volume)
+			return FALSE
+	else if(!ismob(target))
 		return FALSE
 	var/obj/projectile/energy/waterbolt/P = new(get_turf(user))
 	P.zone_aimed = user.zone_selected
@@ -218,6 +223,12 @@
 
 /obj/projectile/energy/waterbolt/on_hit(atom/target, blocked = FALSE)
 	playsound(get_turf(target), pick('sound/foley/water_land1.ogg', 'sound/foley/water_land2.ogg', 'sound/foley/water_land3.ogg'), 80, TRUE)
+	// Fill refillable containers that the bolt lands in
+	if(istype(target, /obj/item/reagent_containers))
+		var/obj/item/reagent_containers/RC = target
+		if((RC.reagent_flags & REFILLABLE) && RC.reagents)
+			RC.reagents.add_reagent(/datum/reagent/water, 5)
+		return BULLET_ACT_HIT
 	if(!iscarbon(target))
 		return BULLET_ACT_HIT
 	var/mob/living/carbon/C = target
