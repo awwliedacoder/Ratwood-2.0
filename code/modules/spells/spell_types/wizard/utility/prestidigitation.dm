@@ -1,6 +1,7 @@
-#define PRESTI_CLEAN "presti_clean"
-#define PRESTI_SPARK "presti_spark"
-#define PRESTI_MOTE "presti_mote"
+#define PRESTI_CLEAN   "presti_clean"
+#define PRESTI_SPARK   "presti_spark"
+#define PRESTI_MOTE    "presti_mote"
+#define PRESTI_SPLASH  "presti_splash"
 
 /obj/effect/proc_holder/spell/targeted/touch/prestidigitation
 	name = "Prestidigitation"
@@ -22,9 +23,11 @@
 	desc = "You recall the following incantations you've learned:\n \
 	<b>Touch</b>: Use your arcyne powers to scrub an object or something clean, like using soap. Also known as the Apprentice's Woe.\n \
 	<b>Shove</b>: Will forth a spark on an item of your choosing (or in front of you, if used on the ground) to ignite flammable items and things like torches, lanterns or campfires. \n \
-	<b>Use</b>: Conjure forth an orbiting mote of magelight to light your way."
+	<b>Use</b>: Conjure forth an orbiting mote of magelight to light your way.\n \
+	<b>Punch</b>: Conjure a harmless bolt of water at your target, extinguishing any flames upon them. When aimed at the head, it may distress those of feline nature or noble bearing."
 	catchphrase = null
-	possible_item_intents = list(INTENT_HELP, INTENT_DISARM, /datum/intent/use)
+	no_effect = TRUE
+	possible_item_intents = list(INTENT_HELP, INTENT_DISARM, /datum/intent/use, INTENT_HARM)
 	icon = 'icons/mob/roguehudgrabs.dmi'
 	icon_state = "pulling"
 	icon_state = "grabbing_greyscale"
@@ -63,6 +66,9 @@
 		if (/datum/intent/use) // Summon an orbiting arcane mote for light
 			if(handle_mote(user))
 				handle_cost(user, PRESTI_MOTE)
+		if (INTENT_HARM) // Fire a harmless water bolt — douses fire, distresses felines and nobles when targering the head
+			if(shoot_water_bolt(user, target))
+				handle_cost(user, PRESTI_SPLASH)
 
 /obj/item/melee/touch_attack/prestidigitation/proc/handle_cost(mob/living/carbon/human/user, action)
 	// handles fatigue/stamina deduction, this stuff isn't free - also returns the cost we took to use for xp calculations
@@ -76,6 +82,8 @@
 			extra_fatigue = 5 // just a bit of extra fatigue on this one
 		if (PRESTI_MOTE)
 			extra_fatigue = 15 // same deal here
+		if (PRESTI_SPLASH)
+			extra_fatigue = 20 // one of the most useful effects, stamina cost helps prevent too much spam
 
 	user.stamina_add(fatigue_used + extra_fatigue)
 
@@ -174,13 +182,77 @@
 			new /obj/item/magic/obsidian(user.loc)
 
 // Intents for prestidigitation
-// Intents for prestidigitation
+
+/obj/item/melee/touch_attack/prestidigitation/proc/shoot_water_bolt(mob/living/carbon/human/user, atom/target)
+	if(!ismob(target))
+		return FALSE
+	var/obj/projectile/energy/waterbolt/P = new(get_turf(user))
+	P.zone_aimed = user.zone_selected
+	P.firer = user
+	P.original = target
+	if(target == user)
+		P.on_hit(user)
+		qdel(P)
+	else
+		P.preparePixelProjectile(target, user)
+		P.fire()
+	return TRUE
 
 /obj/effect/wisp/prestidigitation
 	name = "minor magelight mote"
 	desc = "A tiny display of arcyne power used to illuminate."
 	pixel_x = 20
 //baseline wisp is in rogue_fires
+
+// Harmless water bolt fired by prestidigitation's punch intent
+/obj/projectile/energy/waterbolt
+	name = "water bolt"
+	icon_state = "arcane_barrage"
+	damage = 0
+	nodamage = TRUE
+	alpha = 127
+	color = "#5599FF"
+	speed = 1
+	hitsound = null
+	var/zone_aimed = null
+
+/obj/projectile/energy/waterbolt/on_hit(atom/target, blocked = FALSE)
+	playsound(get_turf(target), pick('sound/foley/water_land1.ogg', 'sound/foley/water_land2.ogg', 'sound/foley/water_land3.ogg'), 80, TRUE)
+	if(!iscarbon(target))
+		return BULLET_ACT_HIT
+	var/mob/living/carbon/C = target
+	// Douse fire stacks — 10 per hit, so max stacks (20) requires two bolts
+	if(C.fire_stacks > 0)
+		C.adjust_fire_stacks(-10)
+		if(C.fire_stacks <= 0)
+			C.extinguish_mob() // also extinguishes any burning clothing/items
+	// Chill the target — less than half as much as washing in cold river water
+	if(C.bodytemperature > BODYTEMP_COLD_LEVEL_ONE_MAX + 30)
+		C.adjust_bodytemperature(-30)
+	// Head-aim and mood debuff logic is human-only
+	if(!ishuman(C))
+		return BULLET_ACT_HIT
+	var/mob/living/carbon/human/H = C
+	// Head-aim check for mood debuff
+	if(!(zone_aimed in list(BODY_ZONE_HEAD, BODY_ZONE_PRECISE_SKULL, BODY_ZONE_PRECISE_EARS, BODY_ZONE_PRECISE_R_EYE, BODY_ZONE_PRECISE_L_EYE, BODY_ZONE_PRECISE_NOSE, BODY_ZONE_PRECISE_MOUTH)))
+		return BULLET_ACT_HIT
+	// Abyssor patrons are unaffected
+	if(istype(H.patron, /datum/patron/divine/abyssor))
+		return BULLET_ACT_HIT
+	var/is_cat = istabaxi(H) \
+		|| (iswildkin(H) && (H.dna.species.name in list("Cat-Kin", "Panther-Kin", "Lynx-Kin", "Leopard-Kin"))) \
+		|| (ishalfkin(H) && H.dna.species.name == "Half-Cat") \
+		|| (iscritter(H) && H.dna.species.name == "Catvolk")
+	var/is_noble = H.is_noble()
+	if(is_cat && is_noble)
+		H.add_stress(/datum/stressevent/water_splashed_noble_cat)
+	else if(is_cat)
+		H.add_stress(/datum/stressevent/water_splashed_cat)
+	else if(is_noble)
+		H.add_stress(/datum/stressevent/water_splashed_noble)
+	return BULLET_ACT_HIT
+
 #undef PRESTI_CLEAN
 #undef PRESTI_SPARK
 #undef PRESTI_MOTE
+#undef PRESTI_SPLASH
