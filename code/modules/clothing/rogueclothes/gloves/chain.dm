@@ -13,7 +13,7 @@
 	pickup_sound = 'sound/foley/equip/equip_armor_chain.ogg'
 	equip_sound = 'sound/foley/equip/equip_armor_chain.ogg'
 	anvilrepair = /datum/skill/craft/armorsmithing
-	// smeltresult = /obj/item/ingot/steel//too small to smelt
+	smeltresult = /obj/item/alch/irondust
 	unarmed_bonus = 1.15
 
 /obj/item/clothing/gloves/roguetown/chain/aalloy
@@ -65,5 +65,5 @@
 	icon_state = "icgloves"
 	desc = "Gauntlets made of interlinked iron rings. They offer decent protection against common weaponries, except for arrows."
 	anvilrepair = /datum/skill/craft/armorsmithing
-	// smeltresult = /obj/item/ingot/iron
+	smeltresult = /obj/item/alch/irondust
 	max_integrity = ARMOR_INT_SIDE_IRON
