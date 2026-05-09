@@ -11,6 +11,8 @@
 	display_order = JDO_PILGRIM
 	show_in_credits = FALSE
 	announce_latejoin = FALSE
+	min_pq = 0
+	max_pq = null
 	can_random = FALSE
 	bypass_jobban = TRUE
 	bypass_lastclass = TRUE
