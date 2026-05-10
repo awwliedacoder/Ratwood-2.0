@@ -116,3 +116,4 @@
 				thing_appearance.pixel_y += standing.pixel_y
 				standing.add_overlay(thing_appearance)
 	return standing
+	sewrepair = FALSE
