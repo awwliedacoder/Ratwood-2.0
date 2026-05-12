@@ -591,7 +591,7 @@
 	user.update_inv_head()
 
 // The exact same as the Grenzelhoft hat w/ the cap, but capless; no armor stats. Allows for drip with the helmet aesthetic PR
-/obj/item/clothing/head/roguetown/grenzelhofthat
+/obj/item/clothing/head/roguetown/caplessgrenzelhofthat
 	name = "capless grenzelhoft plume hat"
 	desc = "Whether it's monsters or fair maidens, a true Grenzelhoftian slays both."
 	icon_state = "grenzelhat"
