@@ -118,7 +118,7 @@ export const PaperWriterPanel = () => {
   const insertColorBlock = (hexValue: string) => {
     const cleanHex = sanitizeColorHex(hexValue);
     setColorHex(cleanHex);
-    insertToken(`-=${cleanHex}colored text=-`);
+    insertToken(`-=${cleanHex}`, '=-');
   };
 
   const remaining = Math.max(0, maxlen - draft.length);
@@ -128,7 +128,7 @@ export const PaperWriterPanel = () => {
       <Window.Content scrollable>
         <Stack vertical fill>
           <Stack.Item>
-            <Section title="Input (Append New Text)">
+            <Section title="Input">
               <Stack mb={1} wrap>
                 <Stack.Item>
                   <Button onClick={() => insertToken('**', '**')}>Bold</Button>
@@ -222,16 +222,13 @@ export const PaperWriterPanel = () => {
                 }}
                 value={draft}
                 onChange={(event) => pushDraft(event.target.value)}
-                placeholder="Write text to append under the existing letter..."
+                placeholder="Write your letter..."
               />
             </Section>
           </Stack.Item>
 
           <Stack.Item>
-            <Section title="Preview (Saved + Current Input)">
-              <NoticeBox>
-                No saved content yet. New writing is appended below previous text.
-              </NoticeBox>
+            <Section title="Preview">
               {!!needs_import_confirm && (
                 <NoticeBox danger mt={1}>
                   This letter was imported from existing formatted text. Saving may simplify older

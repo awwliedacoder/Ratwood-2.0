@@ -315,9 +315,6 @@
 		else
 			to_chat(user, span_notice("This writ has not yet been signed."))
 
-/obj/item/paper/inqslip/proc/requires_inquisitorial_tallow()
-	return istype(src, /obj/item/paper/inqslip/arrival) || istype(src, /obj/item/paper/inqslip/accusation) || istype(src, /obj/item/paper/inqslip/confession)
-
 /obj/item/paper/inqslip/accusation
 	name = "accusation"
 	desc = "A writ of religious suspicion, printed on Otavan parchment: one signed not in ink, but blood. Press the accusation against your own bleeding wound in order to obtain a signature. Then pair it with an INDEXER full of the accused's blood. Once done, it is ready to be mailed back to Otava. Fold and seal it, it's only proper."
@@ -445,19 +442,19 @@
 		signee = user
 
 /obj/item/paper/inqslip/attacked_by(obj/item/I, mob/living/user)
+	if(istype(I, /obj/item/seal))
+		to_chat(user, span_warning("I must use a Signet Ring for Inquisitorial Missives"))
+		return
+
 	if(istype(I, /obj/item/clothing/ring/signet))
 		var/obj/item/clothing/ring/signet/S = I
 		if(waxed)
 			to_chat(user,  span_warning("It's already wax-sealed."))
 			return
-		if(S.tallowed && requires_inquisitorial_tallow() && !S.inquisitorial_tallow)
-			to_chat(user, span_warning("I must use Inquisitorial Tallow for this holy missive"))
-			return
 		if(S.tallowed && sealed)
 			waxed = TRUE
 			update_icon()
 			S.tallowed = FALSE
-			S.inquisitorial_tallow = FALSE
 			S.update_icon()
 			playsound(src, 'sound/items/inqslip_sealed.ogg', 75, TRUE, 4)
 			marquevalue += 2

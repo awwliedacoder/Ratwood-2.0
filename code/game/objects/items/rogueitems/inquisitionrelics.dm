@@ -695,6 +695,7 @@ Inquisitorial armory down here
 	intdamage_factor = 0
 	embedding = null
 	var/obj/item/reagent_containers/food/snacks/tallow/loaded_tallow
+	var/loaded_inquisitorial_tallow = FALSE
 	var/remaining
 	var/heatedup
 	var/messageshown = 1
@@ -722,6 +723,7 @@ Inquisitorial armory down here
 	if(remaining == 0)
 		qdel(loaded_tallow)
 		loaded_tallow = initial(loaded_tallow)
+		loaded_inquisitorial_tallow = FALSE
 		update_icon()
 
 /obj/item/inqarticles/tallowpot/attacked_by(obj/item/I, mob/living/user)
@@ -730,6 +732,7 @@ Inquisitorial armory down here
 		if(!loaded_tallow)
 			var/obj/item/reagent_containers/food/snacks/tallow/Q = I
 			loaded_tallow = Q
+			loaded_inquisitorial_tallow = istype(I, /obj/item/reagent_containers/food/snacks/tallow/red)
 			user.transferItemToLoc(Q, src, TRUE)
 			remaining = 300
 			update_icon()
@@ -750,14 +753,30 @@ Inquisitorial armory down here
 		if(loaded_tallow && heatedup)
 			var/obj/item/clothing/ring/signet/ring = I
 			ring.tallowed = TRUE
-			ring.inquisitorial_tallow = istype(loaded_tallow, /obj/item/reagent_containers/food/snacks/tallow/red)
 			ring.update_icon()
 
 	if(istype(I, /obj/item/seal))
+		if(loaded_tallow && loaded_inquisitorial_tallow)
+			to_chat(user, span_warning("I must use a Signet Ring for Inquisitorial Missives"))
+			return
 		if(loaded_tallow && heatedup)
 			var/obj/item/seal/seal = I
 			seal.tallowed = TRUE
 			seal.update_icon()
+
+/obj/item/inqarticles/tallowpot/examine(mob/user)
+	. = ..()
+	if(!loaded_tallow)
+		. += span_info("It is empty.")
+		return
+	if(loaded_inquisitorial_tallow)
+		. += span_info("It currently contains Inquisitorial Tallow.")
+	else
+		. += span_info("It currently contains soft tallow.")
+	if(heatedup)
+		. += span_notice("The tallow is melted and ready for stamping.")
+	else
+		. += span_warning("The tallow is hardened and must be reheated before stamping.")
 
 
 /obj/item/inqarticles/tallowpot/update_icon()
