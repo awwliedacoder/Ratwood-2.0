@@ -67,7 +67,7 @@
 /obj/item/reagent_containers/food/snacks/tallow/soft
 	name = "soft tallow"
 	desc = "Rendered tallow softened with additional fat, making it easier to spread for sealing. It resembles Inquisitorial Tallow, but lacks its holy sanction."
-	icon_state = "redtallow"
+	icon_state = "softtallow"
 	tastes = list("grease" = 1, "oil" = 1, "regret" =1)
 
 /obj/item/reagent_containers/food/snacks/tallow/attacked_by(obj/item/I, mob/living/user)
