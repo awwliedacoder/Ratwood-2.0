@@ -235,7 +235,7 @@
 			"ARE YOU FAITHFUL!?",
 			"WHO IS YOUR SHEPHERD!?",
 		)
-		src.visible_message(span_warning("[src] shoves the amulet into [H]'s lux!"))
+		src.visible_message(span_warning("[src] shoves [S] into [H]'s lux!"))
 		say(pick(faith_lines), spans = list("torture"))
 		H.emote("agony", forced = TRUE)
 
