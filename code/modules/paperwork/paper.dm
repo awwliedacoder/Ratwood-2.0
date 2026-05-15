@@ -86,6 +86,7 @@
 	var/folded_icon_state = "parchment_folded"
 	var/sealed_icon_state = "parchment_sealed"
 	var/sealed_tint_icon_state = "parchment_sealed_tint"
+	var/mutable_appearance/seal_tint_overlay
 	///CSS applied to <body> when reading — used by fax letters to show a rim on the window border.
 	var/window_rim_style
 
@@ -335,27 +336,35 @@
 		slapcraft_recipes = slapcraft_recipe_list,\
 		)
 
+/obj/item/paper/proc/apply_seal_tint()
+	if(seal_tint_overlay)
+		cut_overlay(seal_tint_overlay)
+		seal_tint_overlay = null
+	if(seal_color)
+		seal_tint_overlay = mutable_appearance(icon, sealed_tint_icon_state)
+		seal_tint_overlay.color = seal_color
+		add_overlay(seal_tint_overlay)
+
+/obj/item/paper/proc/clear_seal_tint()
+	if(seal_tint_overlay)
+		cut_overlay(seal_tint_overlay)
+		seal_tint_overlay = null
+
 /obj/item/paper/update_icon_state()
-	cut_overlay(sealed_tint_icon_state)
+	clear_seal_tint()
 	if(mailer)
 		icon_state = sealed_icon_state
 		folded = TRUE
 		name = "letter"
 		throw_range = 7
-		if(seal_color)
-			var/mutable_appearance/tint_overlay = mutable_appearance(icon, sealed_tint_icon_state)
-			tint_overlay.color = seal_color
-			add_overlay(tint_overlay)
+		apply_seal_tint()
 		return
 	name = initial(name)
 	throw_range = initial(throw_range)
 	if(seal_label && !seal_broken)
 		icon_state = sealed_icon_state
 		folded = TRUE
-		if(seal_color)
-			var/mutable_appearance/tint_overlay = mutable_appearance(icon, sealed_tint_icon_state)
-			tint_overlay.color = seal_color
-			add_overlay(tint_overlay)
+		apply_seal_tint()
 		return
 	if(folded)
 		icon_state = folded_icon_state

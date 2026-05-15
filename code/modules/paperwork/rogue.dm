@@ -17,6 +17,7 @@
 	folded_icon_state = "scroll_folded"
 	sealed_icon_state = "scroll_sealed"
 	sealed_tint_icon_state = "scroll_sealed_tint"
+	update_icon_state()
 
 
 /obj/item/paper/scroll/attackby(obj/item/P, mob/living/carbon/human/user, params)
@@ -86,17 +87,14 @@
 	user.update_inv_hands()
 
 /obj/item/paper/scroll/update_icon_state()
-	cut_overlay(sealed_tint_icon_state)
+	clear_seal_tint()
 	if(mailer)
 		icon_state = sealed_icon_state
 		open = FALSE
 		name = "missive"
 		slot_flags |= ITEM_SLOT_HIP
 		throw_range = 7
-		if(seal_color)
-			var/mutable_appearance/tint_overlay = mutable_appearance(icon, sealed_tint_icon_state)
-			tint_overlay.color = seal_color
-			add_overlay(tint_overlay)
+		apply_seal_tint()
 		return
 	throw_range = initial(throw_range)
 	if(seal_label && !seal_broken)
@@ -104,10 +102,7 @@
 		open = FALSE
 		name = "sealed scroll"
 		slot_flags |= ITEM_SLOT_HIP
-		if(seal_color)
-			var/mutable_appearance/tint_overlay = mutable_appearance(icon, sealed_tint_icon_state)
-			tint_overlay.color = seal_color
-			add_overlay(tint_overlay)
+		apply_seal_tint()
 		return
 	if(open)
 		if(info)
