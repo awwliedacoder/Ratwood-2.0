@@ -79,7 +79,7 @@
 		return
 	if(is_blind(user))
 		return
-	var/new_label = stripped_input(user, "Engrave your seal text (format, a ):", "Custom Seal Engraving", "", 64)
+	var/new_label = stripped_input(user, "Engrave your seal text (format, 'a seal of <name>):", "Custom Seal Engraving", "", 64)
 	if(!new_label)
 		return
 	new_label = trim(STRIP_HTML_SIMPLE(new_label, 64))
