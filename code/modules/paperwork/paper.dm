@@ -337,12 +337,17 @@
 		)
 
 /obj/item/paper/proc/apply_seal_tint()
-	if(seal_tint_overlay)
-		cut_overlay(seal_tint_overlay)
-		seal_tint_overlay = null
-	if(seal_color)
+	if(!seal_color)
+		clear_seal_tint()
+		return
+	if(!seal_tint_overlay)
 		seal_tint_overlay = mutable_appearance(icon, sealed_tint_icon_state)
 		seal_tint_overlay.color = seal_color
+		add_overlay(seal_tint_overlay)
+		return
+	if(seal_tint_overlay.color != seal_color)
+		seal_tint_overlay.color = seal_color
+		cut_overlay(seal_tint_overlay)
 		add_overlay(seal_tint_overlay)
 
 /obj/item/paper/proc/clear_seal_tint()
@@ -351,7 +356,6 @@
 		seal_tint_overlay = null
 
 /obj/item/paper/update_icon_state()
-	clear_seal_tint()
 	if(mailer)
 		icon_state = sealed_icon_state
 		folded = TRUE
@@ -366,6 +370,7 @@
 		folded = TRUE
 		apply_seal_tint()
 		return
+	clear_seal_tint()
 	if(folded)
 		icon_state = folded_icon_state
 		name = "folded parchment"
@@ -718,7 +723,6 @@
 			return
 		if(user.can_read(src))
 			open_writer_panel(user, P)
-			update_icon_state()
 			return
 		else
 			to_chat(user, "<span class='warning'>I can't write.</span>")

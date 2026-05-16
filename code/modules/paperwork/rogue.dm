@@ -92,7 +92,6 @@
 	user.update_inv_hands()
 
 /obj/item/paper/scroll/update_icon_state()
-	clear_seal_tint()
 	if(mailer)
 		icon_state = sealed_icon_state
 		open = FALSE
@@ -109,6 +108,7 @@
 		slot_flags |= ITEM_SLOT_HIP
 		apply_seal_tint()
 		return
+	clear_seal_tint()
 	if(open)
 		if(info)
 			icon_state = open_written_icon_state
