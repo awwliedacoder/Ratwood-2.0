@@ -23,7 +23,6 @@
 	icon_state = "acgloves"
 	max_integrity = ARMOR_INT_SIDE_DECREPIT
 	color = "#bb9696"
-	smeltresult = /obj/item/ingot/aaslag
 	anvilrepair = null
 
 /obj/item/clothing/gloves/roguetown/chain/aalloy/ancient
