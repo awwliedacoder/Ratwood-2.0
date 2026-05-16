@@ -1,6 +1,15 @@
 // Shared scroll state must be declared before any procs use it.
 /obj/item/paper/scroll
 	var/open = FALSE
+	name = "scroll"
+	icon_state = "scroll"
+	slot_flags = null
+	dropshrink = 0.6
+	firefuel = 30 SECONDS
+	sellprice = 2
+	textper = 108
+	maxlen = 5000
+	throw_range = 3
 	open_empty_icon_state = "scroll"
 	open_written_icon_state = "scrollwrite"
 	folded_icon_state = "scroll_folded"
@@ -13,16 +22,6 @@
 	if(!isobserver(user) || !IsAdminGhost(user))
 		if(info && open)
 			. += "<a href='?src=[REF(src)];read=1'>Read</a>"
-
-	name = "scroll"
-	icon_state = "scroll"
-	slot_flags = null
-	dropshrink = 0.6
-	firefuel = 30 SECONDS
-	sellprice = 2
-	textper = 108
-	maxlen = 5000
-	throw_range = 3
 
 /obj/item/paper/scroll/Initialize(mapload)
 	. = ..()
