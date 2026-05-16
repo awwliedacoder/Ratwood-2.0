@@ -5,8 +5,9 @@
 // Only show the 'Read' prompt if the scroll is open and has info
 /obj/item/paper/scroll/examine(mob/user)
 	. = ..()
-	if(info && open)
-		. += "<a href='?src=[REF(src)];read=1'>Read</a>"
+	if(!isobserver(user) || !IsAdminGhost(user))
+		if(info && open)
+			. += "<a href='?src=[REF(src)];read=1'>Read</a>"
 
 	name = "scroll"
 	icon_state = "scroll"
@@ -22,6 +23,7 @@
 	. = ..()
 	open_empty_icon_state = "scroll"
 	folded_icon_state = "scroll_folded"
+	update_icon_state()
 
 /obj/item/paper/scroll/attackby(obj/item/P, mob/living/carbon/human/user, params)
 	if(istype(P, /obj/item/natural/thorn) || istype(P, /obj/item/natural/feather))

@@ -377,6 +377,8 @@
 
 /obj/item/paper/examine(mob/user)
 	. = ..()
+	var/admin_observer = isobserver(user) && IsAdminGhost(user)
+	var/is_scroll = istype(src, /obj/item/paper/scroll)
 	if(seal_label)
 		var/seal_style = "color:[seal_color]"
 		if(seal_is_official)
@@ -385,13 +387,13 @@
 			. += "<span style='[seal_style]'>It bears a broken wax seal of [seal_label].</span>"
 		else
 			. += "<span style='[seal_style]'>It bears an unbroken wax seal of [seal_label].</span>"
-	if(!mailer)
+	if(mailer)
+		. += "It's from [mailer], addressed to [mailedto]."
+	if(admin_observer)
+		. += "<a href='?src=[REF(src)];read=1'>Read</a>"
+	else if(!mailer && !is_scroll)
 		if(info && !folded)
 			. += "<a href='?src=[REF(src)];read=1'>Read</a>"
-	else
-		. += "It's from [mailer], addressed to [mailedto]."
-		if(isobserver(user) && IsAdminGhost(user))
-			. += "<a href='?src=[REF(src)];read=1'>Read (Admin)</a>"
 
 /obj/item/paper/proc/read(mob/user)
 	if(!user.client)
@@ -408,10 +410,10 @@
 		return
 	if(!admin_observer && mailer)
 		return
-	if(folded)
+	if(!admin_observer && folded)
 		to_chat(user, span_warning("I need to unfold [src] first."))
 		return
-	if(seal_label && !seal_broken)
+	if(!admin_observer && seal_label && !seal_broken)
 		to_chat(user, span_warning("The wax seal is still intact. I need to unseal it first."))
 		return
 	if(in_range(user, src) || isobserver(user))
