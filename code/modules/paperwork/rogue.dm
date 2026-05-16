@@ -112,7 +112,7 @@
 		name = initial(name)
 	else
 		icon_state = folded_icon_state
-		name = "scroll"
+		name = "folded scroll"
 
 //Fake reskin of a scroll for the dwarf mercs -- just a fluffy toy
 /obj/item/paper/scroll/grudge
