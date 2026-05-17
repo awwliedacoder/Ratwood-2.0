@@ -44,8 +44,11 @@
 /datum/status_effect/buff/healing/rejuvenationsong/t3
 	healing_on_tick = 1
 
+/datum/status_effect/buff/healing/rejuvenationsong/on_creation(mob/living/new_owner, new_healing_on_tick = healing_on_tick, is_inhumen = FALSE)
+	return ..(new_owner, new_healing_on_tick, is_inhumen)
+
 /datum/status_effect/buff/healing/rejuvenationsong/on_apply()
-	return TRUE
+	return ..()
 
 /datum/status_effect/buff/healing/rejuvenationsong/tick()
 	var/obj/effect/temp_visual/heal/H = new /obj/effect/temp_visual/heal_rogue(get_turf(owner))
