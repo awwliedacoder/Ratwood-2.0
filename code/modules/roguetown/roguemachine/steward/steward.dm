@@ -58,6 +58,7 @@
 	daily_payments["Magicians Associate"] = 10
 	daily_payments["Jester"] = 6
 	daily_payments["Court Chaplain"] = 30
+	daily_payments["Palace Chaplain"] = 30
 	daily_payments["Azeb"] = 20
 	daily_payments["Azeb Agha"] = 40
 	daily_payments["Slave Master"] = 50

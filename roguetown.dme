@@ -3141,6 +3141,7 @@
 #include "modular_deserttown\hyena.dm"
 #include "modular_deserttown\jobs\courtslave.dm"
 #include "modular_deserttown\jobs\desertjobs.dm"
+#include "modular_deserttown\jobs\dtchaplain.dm"
 #include "modular_deserttown\jobs\dtslave.dm"
 #include "modular_deserttown\jobs\headslave.dm"
 #include "modular_deserttown\jobs\garrison\azeb.dm"

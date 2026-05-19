@@ -84,6 +84,7 @@ GLOBAL_LIST_INIT(courtier_positions, list(
 	"Court Chaplain",
 	//Desert
 	"Head Slave",
+	"Palace Chaplain",
 ))
 
 GLOBAL_LIST_INIT(garrison_positions, list(

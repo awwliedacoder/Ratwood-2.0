@@ -355,6 +355,7 @@
 	/datum/job/roguetown/butler,\
 	/datum/job/roguetown/apothecary,\
 	/datum/job/roguetown/chaplain,\
+	/datum/job/roguetown/dtchaplain,\
 	/datum/job/roguetown/magician,\
 	/datum/job/roguetown/headslave,\
 	/datum/job/roguetown/slave,\
