@@ -1,3 +1,9 @@
+/datum/supply_pack/rogue/tools/soft_tallow
+	name = "Soft Tallow"
+	cost = 20
+	contains = list(
+		/obj/item/reagent_containers/food/snacks/tallow/soft,
+	)
 
 /datum/supply_pack/rogue/tools
 	group = "Tools"
