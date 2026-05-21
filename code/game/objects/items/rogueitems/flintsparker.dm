@@ -15,7 +15,7 @@
 	resistance_flags = FIRE_PROOF
 	grid_height = 32
 	grid_width = 32
-	dropshrink = 0.9
+	dropshrink = 0.8
 	color = "#dfdada"//just debrightening the sprite a smidge
 
 /obj/item/flint/attack_self(mob/living/user)

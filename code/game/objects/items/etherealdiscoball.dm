@@ -1,4 +1,4 @@
-/obj/item/etherealballdeployer
+/* /obj/item/etherealballdeployer
 	name = "Portable Ethereal Disco Ball"
 	desc = ""
 	icon = 'icons/obj/device.dmi'
@@ -71,3 +71,4 @@
 	var/mutable_appearance/base_overlay = mutable_appearance(icon, "ethdisco_base")
 	base_overlay.appearance_flags = RESET_COLOR
 	add_overlay(base_overlay)
+ */

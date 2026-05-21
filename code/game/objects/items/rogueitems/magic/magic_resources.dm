@@ -16,6 +16,7 @@
 	grid_width = 32
 	grid_height = 32
 	var/tier = 0 //used for determining potency for mob healing
+	dropshrink = 0.85
 
 // MELD
 /obj/item/magic/melded
