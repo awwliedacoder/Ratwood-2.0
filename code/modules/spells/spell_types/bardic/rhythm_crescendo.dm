@@ -241,6 +241,9 @@
 	healing_on_tick = RHYTHM_REGEN_TICK
 	outline_colour = BARDIC_RHYTHM_COLOR
 
+/datum/status_effect/buff/healing/rhythm_regen/on_creation(mob/living/new_owner, new_healing_on_tick = healing_on_tick, is_inhumen = FALSE)
+	return ..(new_owner, new_healing_on_tick, is_inhumen)
+
 /obj/effect/proc_holder/spell/self/crescendo
 	name = "Crescendo"
 	desc = "Prime your next melee strike to unleash a 3x3 blast based on your last rhythm. Build 3 rhythm procs to unlock."
@@ -379,6 +382,9 @@
 	duration = CRESCENDO_MENDING_DURATION
 	healing_on_tick = CRESCENDO_MENDING_TICK
 	outline_colour = BARDIC_RHYTHM_COLOR
+
+/datum/status_effect/buff/healing/crescendo_mending/on_creation(mob/living/new_owner, new_healing_on_tick = healing_on_tick, is_inhumen = FALSE)
+	return ..(new_owner, new_healing_on_tick, is_inhumen)
 
 #undef RHYTHM_FILTER
 #undef CRESCENDO_FILTER
