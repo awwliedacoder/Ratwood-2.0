@@ -150,7 +150,6 @@
 	prime_timer_id = addtimer(CALLBACK(src, PROC_REF(rhythm_fizzle), user), RHYTHM_WINDOW, TIMER_STOPPABLE)
 
 /obj/effect/proc_holder/spell/self/rhythm/proc/on_melee_hit(mob/living/source, mob/living/target, mob/living/user, obj/item/weapon)
-	SIGNAL_HANDLER
 	if(!primed)
 		return
 	if(!isliving(target) || target == user || target.stat == DEAD)
