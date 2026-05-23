@@ -729,8 +729,9 @@ Inquisitorial armory down here
 			update_icon()
 	if(remaining == 0)
 		if(loaded_tallow && !QDELETED(loaded_tallow))
-			qdel(loaded_tallow)
-		loaded_tallow = null
+			QDEL_NULL(loaded_tallow)
+		else
+			loaded_tallow = null
 		loaded_inquisitorial_tallow = FALSE
 		update_icon()
 
