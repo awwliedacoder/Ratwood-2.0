@@ -102,8 +102,9 @@
 			/obj/item/natural/bone,
 			/obj/item/natural/bone,
 			/obj/item/skull,
-			/obj/item/ammo_casing/caseless/rogue/arrow/iron,
-			/obj/item/ammo_casing/caseless/rogue/arrow/iron,
+			/obj/item/ammo_casing/caseless/rogue/arrow/stone,
+			/obj/item/ammo_casing/caseless/rogue/arrow/stone,
+			/obj/item/ammo_casing/caseless/rogue/arrow/stone,
 			)
 	ai_controller = /datum/ai_controller/skeleton_ranged
 
