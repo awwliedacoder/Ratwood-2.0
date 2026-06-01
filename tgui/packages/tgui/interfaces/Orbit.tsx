@@ -17,6 +17,7 @@ type OrbitTarget = {
   ref: string;
   orbiters?: number;
   job?: string;
+  role?: string;
 };
 
 type OrbitData = {
@@ -36,12 +37,21 @@ const SECTIONS = [
   { key: 'npcs', title: 'NPCs', color: 'average' },
 ] as const;
 
+type RoleGroup = {
+  label: string;
+  items: OrbitTarget[];
+};
+
 function itemMatches(item: OrbitTarget, query: string) {
   if (!query) {
     return true;
   }
   const haystack = `${item.full_name} ${item.job || ''}`.toLowerCase();
   return haystack.includes(query);
+}
+
+function getRoleLabel(item: OrbitTarget) {
+  return item.role || item.job || 'Unassigned';
 }
 
 export const Orbit = (props) => {
@@ -54,9 +64,22 @@ export const Orbit = (props) => {
     return SECTIONS.map((section) => {
       const source = (data[section.key] || []) as OrbitTarget[];
       const filtered = source.filter((item) => itemMatches(item, normalizedQuery));
+      const grouped = filtered.reduce((groups, item) => {
+        const label = getRoleLabel(item);
+        const bucket = groups.get(label) || [];
+        bucket.push(item);
+        groups.set(label, bucket);
+        return groups;
+      }, new Map<string, OrbitTarget[]>());
+
+      const roleGroups: RoleGroup[] = [...grouped.entries()]
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(([label, items]) => ({ label, items }));
+
       return {
         ...section,
         items: filtered,
+        roleGroups,
       };
     }).filter((section) => section.items.length > 0);
   }, [data, normalizedQuery]);
@@ -95,30 +118,43 @@ export const Orbit = (props) => {
 
               {sections.map((section) => (
                 <Collapsible key={section.key} title={`${section.title} - (${section.items.length})`}>
-                  <Stack wrap>
-                    {section.items.map((item) => {
-                      const selected = data.orbiting_ref === item.ref;
-                      return (
-                        <Stack.Item key={item.ref}>
-                          <Button
-                            color={section.color}
-                            onClick={() => act('orbit', { ref: item.ref })}
-                            selected={selected}
-                            tooltip={item.job || item.full_name}
-                            tooltipPosition="bottom-start"
-                          >
-                            <Stack>
-                              <Stack.Item>{item.full_name}</Stack.Item>
-                              {!!item.orbiters && (
-                                <Stack.Item>
-                                  <Icon name="ghost" /> {item.orbiters}
+                  <Stack vertical>
+                    {section.roleGroups.map((group) => (
+                      <Stack.Item key={`${section.key}-${group.label}`}>
+                        <Section
+                          title={`${group.label} - (${group.items.length})`}
+                        >
+                          <Stack wrap>
+                            {group.items.map((item) => {
+                              const selected = data.orbiting_ref === item.ref;
+                              return (
+                                <Stack.Item key={item.ref}>
+                                  <Button
+                                    color={section.color}
+                                    onClick={() => act('orbit', { ref: item.ref })}
+                                    selected={selected}
+                                    tooltip={item.job || item.role || item.full_name}
+                                    tooltipPosition="bottom-start"
+                                  >
+                                    <Stack>
+                                      <Stack.Item>
+                                        {item.full_name}
+                                        {!!item.role && ` [${item.role}]`}
+                                      </Stack.Item>
+                                      {!!item.orbiters && (
+                                        <Stack.Item>
+                                          <Icon name="ghost" /> {item.orbiters}
+                                        </Stack.Item>
+                                      )}
+                                    </Stack>
+                                  </Button>
                                 </Stack.Item>
-                              )}
-                            </Stack>
-                          </Button>
-                        </Stack.Item>
-                      );
-                    })}
+                              );
+                            })}
+                          </Stack>
+                        </Section>
+                      </Stack.Item>
+                    ))}
                   </Stack>
                 </Collapsible>
               ))}

@@ -1287,7 +1287,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	if(ismob(target))
 		var/mob/M = target
+		if(M.mind?.assigned_role)
+			entry["role"] = M.mind.assigned_role
 		if(M.job)
 			entry["job"] = M.job
+		if(istype(M, /mob/living/carbon/human/species/npc/deadite))
+			entry["role"] = "Deadite NPC"
 
 	return entry
