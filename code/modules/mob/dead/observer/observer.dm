@@ -1253,17 +1253,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			continue
 
 		if(isobserver(M))
-			var/list/entry = serialize_atom(M, namecounts_ghosts, role_color_cache)
-			if(!entry)
-				continue
-			data["ghosts"] += list(entry)
+			append_serialized_target(data["ghosts"], M, namecounts_ghosts, role_color_cache)
 			continue
 
 		if(M.stat == DEAD)
-			var/list/entry = serialize_atom(M, namecounts_dead, role_color_cache)
-			if(!entry)
-				continue
-			data["dead"] += list(entry)
+			append_serialized_target(data["dead"], M, namecounts_dead, role_color_cache)
 			continue
 
 		if(istype(M, /mob/living/carbon/human/species/npc/deadite))
@@ -1272,22 +1266,64 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		if(!M.mind && !M.ckey)
 			continue
 
-		var/list/entry = serialize_atom(M, namecounts_alive, role_color_cache)
-		if(!entry)
-			continue
-		data["alive"] += list(entry)
+		append_serialized_target(data["alive"], M, namecounts_alive, role_color_cache)
 
 	return data
+
+/datum/orbit_menu/proc/append_serialized_target(list/bucket, atom/movable/target, list/namecounts, list/role_color_cache)
+	if(!islist(bucket))
+		return
+
+	var/list/entry = serialize_atom(target, namecounts, role_color_cache)
+	if(!entry)
+		return
+
+	bucket += list(entry)
+
+/datum/orbit_menu/proc/get_role_selection_color(assigned_role, list/role_color_cache)
+	if(!assigned_role)
+		return null
+
+	if(role_color_cache)
+		var/cached_color = role_color_cache[assigned_role]
+		if(!isnull(cached_color))
+			return cached_color || null
+
+	var/resolved_color = null
+	var/datum/job/J = SSjob.GetJob(assigned_role)
+	if(J)
+		var/department = SSjob.bitflag_to_department(J.department_flag, J.obsfuscated_job)
+		var/list/department_colors = JCOLOR_BY_DEPARTMENT
+		if(department_colors[department])
+			resolved_color = department_colors[department]
+		else if(J.selection_color)
+			resolved_color = J.selection_color
+
+	if(role_color_cache)
+		role_color_cache[assigned_role] = resolved_color || ""
+
+	return resolved_color
 
 /datum/orbit_menu/proc/get_orbit_antag_group(mob/M)
 	if(!istype(M) || !M.mind)
 		return null
 
+	var/static/list/major_antag_typecache = typecacheof(list(
+		/datum/antagonist/werewolf,
+		/datum/antagonist/vampire,
+		/datum/antagonist/lich,
+	))
+	var/static/list/minor_antag_typecache = typecacheof(list(
+		/datum/antagonist/bandit,
+		/datum/antagonist/wretch,
+		/datum/antagonist/gnoll,
+	))
+
 	var/has_minor = FALSE
 	for(var/datum/antagonist/A in M.mind.antag_datums)
-		if(istype(A, /datum/antagonist/werewolf) || istype(A, /datum/antagonist/vampire) || istype(A, /datum/antagonist/lich))
+		if(is_type_in_typecache(A, major_antag_typecache))
 			return "major"
-		if(istype(A, /datum/antagonist/bandit) || istype(A, /datum/antagonist/wretch) || istype(A, /datum/antagonist/gnoll))
+		if(is_type_in_typecache(A, minor_antag_typecache))
 			has_minor = TRUE
 
 	if(has_minor)
@@ -1327,33 +1363,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		if(M.mind?.assigned_role)
 			var/assigned_role = M.mind.assigned_role
 			entry["role"] = assigned_role
-			if(role_color_cache)
-				var/cached_color = role_color_cache[assigned_role]
-				if(!isnull(cached_color))
-					if(cached_color != "")
-						entry["selection_color"] = cached_color
-				else
-					var/resolved_color = null
-					var/datum/job/J = SSjob.GetJob(assigned_role)
-					if(J)
-						var/department = SSjob.bitflag_to_department(J.department_flag, J.obsfuscated_job)
-						var/list/department_colors = JCOLOR_BY_DEPARTMENT
-						if(department_colors[department])
-							resolved_color = department_colors[department]
-						else if(J.selection_color)
-							resolved_color = J.selection_color
-					role_color_cache[assigned_role] = resolved_color || ""
-					if(resolved_color)
-						entry["selection_color"] = resolved_color
-			else
-				var/datum/job/J = SSjob.GetJob(assigned_role)
-				if(J)
-					var/department = SSjob.bitflag_to_department(J.department_flag, J.obsfuscated_job)
-					var/list/department_colors = JCOLOR_BY_DEPARTMENT
-					if(department_colors[department])
-						entry["selection_color"] = department_colors[department]
-					else if(J.selection_color)
-						entry["selection_color"] = J.selection_color
+			var/selection_color = get_role_selection_color(assigned_role, role_color_cache)
+			if(selection_color)
+				entry["selection_color"] = selection_color
 		if(M.job)
 			entry["job"] = M.job
 		if(isliving(M))

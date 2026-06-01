@@ -55,6 +55,42 @@ type OrbitSection = (typeof SECTIONS)[number] & {
   roleGroups: RoleGroup[];
 };
 
+function buildRoleGroupsForSection(
+  sectionKey: OrbitSection['key'],
+  filtered: OrbitTargetIndexed[],
+): RoleGroup[] {
+  if (sectionKey !== 'alive') {
+    return groupByRoleLabel(filtered);
+  }
+
+  const minorAntags: OrbitTargetIndexed[] = [];
+  const majorAntags: OrbitTargetIndexed[] = [];
+  const normalAlive: OrbitTargetIndexed[] = [];
+
+  filtered.forEach((item) => {
+    if (item.antag_group === 'minor') {
+      minorAntags.push(item);
+      return;
+    }
+    if (item.antag_group === 'major') {
+      majorAntags.push(item);
+      return;
+    }
+    normalAlive.push(item);
+  });
+
+  const roleGroups: RoleGroup[] = [];
+  if (minorAntags.length > 0) {
+    roleGroups.push({ label: 'Minor', items: minorAntags });
+  }
+  if (majorAntags.length > 0) {
+    roleGroups.push({ label: 'Major', items: majorAntags });
+  }
+  roleGroups.push(...groupByRoleLabel(normalAlive));
+
+  return roleGroups;
+}
+
 function groupByRoleLabel(items: OrbitTargetIndexed[]): RoleGroup[] {
   const grouped = items.reduce((groups, item) => {
     const label = getRoleLabel(item);
@@ -228,46 +264,37 @@ export const Orbit = () => {
         return builtSections;
       }
 
-      const roleGroups: RoleGroup[] = [];
-
-      if (section.key === 'alive') {
-        const minorAntags: OrbitTargetIndexed[] = [];
-        const majorAntags: OrbitTargetIndexed[] = [];
-        const normalAlive: OrbitTargetIndexed[] = [];
-
-        filtered.forEach((item) => {
-          if (item.antag_group === 'minor') {
-            minorAntags.push(item);
-            return;
-          }
-          if (item.antag_group === 'major') {
-            majorAntags.push(item);
-            return;
-          }
-          normalAlive.push(item);
-        });
-
-        if (minorAntags.length > 0) {
-          roleGroups.push({ label: 'Minor', items: minorAntags });
-        }
-        if (majorAntags.length > 0) {
-          roleGroups.push({ label: 'Major', items: majorAntags });
-        }
-
-        roleGroups.push(...groupByRoleLabel(normalAlive));
-      } else {
-        roleGroups.push(...groupByRoleLabel(filtered));
-      }
-
       builtSections.push({
         ...section,
         items: filtered,
-        roleGroups,
+        roleGroups: buildRoleGroupsForSection(section.key, filtered),
       });
 
       return builtSections;
     }, [] as OrbitSection[]);
   }, [indexedData, normalizedQuery]);
+
+  const renderOrbitTarget = useCallback(
+    (
+      item: OrbitTargetIndexed,
+      sectionColor: string,
+      appliedColorMode: 'role' | 'health',
+      showRole: boolean,
+    ) => {
+      return (
+        <OrbitTargetButton
+          key={item.ref}
+          item={item}
+          selected={orbitRef === item.ref}
+          sectionColor={sectionColor}
+          colorMode={appliedColorMode}
+          showRole={showRole}
+          onOrbit={handleOrbit}
+        />
+      );
+    },
+    [handleOrbit, orbitRef],
+  );
 
   return (
     <Window title="Orbit" width={460} height={560}>
@@ -318,19 +345,9 @@ export const Orbit = () => {
                 <Collapsible key={section.key} title={`${section.title} - (${section.items.length})`}>
                   {section.key === 'ghosts' ? (
                     <Stack wrap>
-                      {section.items.map((item) => {
-                        return (
-                          <OrbitTargetButton
-                            key={item.ref}
-                            item={item}
-                            selected={orbitRef === item.ref}
-                            sectionColor={section.color}
-                            colorMode="role"
-                            showRole={false}
-                            onOrbit={handleOrbit}
-                          />
-                        );
-                      })}
+                      {section.items.map((item) =>
+                        renderOrbitTarget(item, section.color, 'role', false),
+                      )}
                     </Stack>
                   ) : (
                     <Stack vertical>
@@ -340,19 +357,9 @@ export const Orbit = () => {
                             title={`${group.label} - (${group.items.length})`}
                           >
                             <Stack wrap>
-                              {group.items.map((item) => {
-                                return (
-                                  <OrbitTargetButton
-                                    key={item.ref}
-                                    item={item}
-                                    selected={orbitRef === item.ref}
-                                    sectionColor={section.color}
-                                    colorMode={colorMode}
-                                    showRole
-                                    onOrbit={handleOrbit}
-                                  />
-                                );
-                              })}
+                              {group.items.map((item) =>
+                                renderOrbitTarget(item, section.color, colorMode, true),
+                              )}
                             </Stack>
                           </Section>
                         </Stack.Item>
