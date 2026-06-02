@@ -222,11 +222,18 @@ function groupByRoleLabel(items: OrbitTargetIndexed[]): RoleGroup[] {
 }
 
 function buildSearchKey(item: OrbitTarget) {
-  return `${item.full_name} ${item.job || ''} ${item.role || ''} ${item.department || ''} ${item.antag_role || ''}`.toLowerCase();
+  return [item.full_name, item.job, item.role, item.department, item.antag_role]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+}
+
+function getBaseRoleText(item: OrbitTarget) {
+  return item.role || item.job || UNASSIGNED_ROLE_LABEL;
 }
 
 function getRoleLabel(item: OrbitTarget) {
-  return item.antag_role || item.role || item.job || UNASSIGNED_ROLE_LABEL;
+  return item.antag_role || getBaseRoleText(item);
 }
 
 function getDisplayName(fullName: string) {
@@ -237,7 +244,7 @@ function getDisplayName(fullName: string) {
 }
 
 function getTooltipRoleText(item: OrbitTarget) {
-  const baseRoleText = item.role || item.job || UNASSIGNED_ROLE_LABEL;
+  const baseRoleText = getBaseRoleText(item);
   if (!item.antag_role || item.antag_role === baseRoleText) {
     return baseRoleText;
   }
