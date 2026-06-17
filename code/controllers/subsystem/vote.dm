@@ -4,7 +4,7 @@
 SUBSYSTEM_DEF(vote)
 	name = "Vote"
 	wait = 1 SECONDS
-	init_order = 75
+	init_order = 65
 	flags = SS_KEEP_TIMING
 	runlevels = RUNLEVEL_LOBBY | RUNLEVELS_DEFAULT
 
@@ -258,14 +258,15 @@ SUBSYSTEM_DEF(vote)
  * Returns TRUE if we can start a vote, FALSE if we can't.
  */
 /datum/controller/subsystem/vote/proc/can_vote_start(mob/vote_initiator, forced)
-	// Even if it's forced we can't vote before we're set up
+
+	if(forced)
+		return TRUE
+
 	if(!SSticker.setup_done)
 		if(vote_initiator)
 			to_chat(vote_initiator, span_warning("You cannot start a vote now, the server is not done initializing."))
 		return FALSE
 
-	if(forced)
-		return TRUE
 
 	var/next_allowed_time = last_vote_time + CONFIG_GET(number/vote_delay)
 	if(next_allowed_time > world.time)

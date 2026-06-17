@@ -2,8 +2,8 @@
 	name = "Map"
 	default_message = "Vote for next round's map!"
 	count_method = VOTE_COUNT_METHOD_SINGLE
-	winner_method = VOTE_WINNER_METHOD_NONE
-	display_statistics = FALSE
+	winner_method = VOTE_WINNER_METHOD_SIMPLE
+	display_statistics = TRUE
 
 /datum/vote/map_vote/New()
 	. = ..()
@@ -77,3 +77,17 @@
 
 /datum/vote/map_vote/finalize_vote(winning_option)
 	SSmap_vote.finalize_map_vote(src)
+/datum/controller/subsystem/map_vote/proc/get_valid_map_vote_choices()
+	var/list/choices = list()
+
+	for(var/map_id in config.maplist)
+		var/datum/map_config/cfg = config.maplist[map_id]
+
+		if(!cfg)
+			continue
+		if(!cfg.votable)
+			continue
+
+		choices += map_id
+
+	return choices

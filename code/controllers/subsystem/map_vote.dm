@@ -1,55 +1,63 @@
 #define MAP_VOTE_CACHE_LOCATION "data/map_vote_cache.json"
 #define SS_INIT_SUCCESS 2
+
 SUBSYSTEM_DEF(map_vote)
 	name = "Map Vote"
 	flags = SS_NO_FIRE
 
-	/// Has an admin specifically set a map.
+	/// admin override flag
 	var/admin_override = FALSE
 
-	/// Have we already done a vote.
+	/// vote finalized flag
 	var/already_voted = FALSE
 
-	/// The map that has been chosen for next round.
+	/// selected map config
 	var/datum/map_config/next_map_config
 
-	/// Stores the current map vote cache, so that players can look at the current tally.
+	/// cache: map_id => weight
 	var/list/map_vote_cache
 
-	/// Stores the previous map vote cache, used when a map vote is reverted.
+	/// rollback cache
 	var/list/previous_cache
 
-	/// Stores a formatted html string of the tally counts
+	/// UI tally
 	var/tally_printout = span_red("Loading...")
 
 /datum/controller/subsystem/map_vote/Initialize()
 	if(rustg_file_exists(MAP_VOTE_CACHE_LOCATION))
 		map_vote_cache = json_decode(file2text(MAP_VOTE_CACHE_LOCATION))
-		var/carryover = CONFIG_GET(number/map_vote_tally_carryover_percentage)
-		for(var/map_id in map_vote_cache)
-			map_vote_cache[map_id] = round(map_vote_cache[map_id] * (carryover / 100))
-		sanitize_cache()
 	else
 		map_vote_cache = list()
+
+	sanitize_cache()
 	update_tally_printout()
+
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/map_vote/proc/write_cache()
 	rustg_file_write(json_encode(map_vote_cache), MAP_VOTE_CACHE_LOCATION)
 
 /datum/controller/subsystem/map_vote/proc/sanitize_cache()
-	var/max = CONFIG_GET(number/map_vote_maximum_tallies)
-	for(var/map_id in map_vote_cache)
-		if(!(map_id in config.maplist))
-			map_vote_cache -= map_id
-		var/count = map_vote_cache[map_id]
-		if(count > max)
-			map_vote_cache[map_id] = max
+	var/max = 200
+	for(var/map_name in map_vote_cache)
+		var/found = FALSE
+
+		for(var/id in config.maplist)
+			var/datum/map_config/cfg = config.maplist[id]
+			if(cfg.map_name == map_name)
+				found = TRUE
+				break
+
+		if(!found)
+			map_vote_cache -= map_name
+			continue
+
+		map_vote_cache[map_name] = min(map_vote_cache[map_name], max)
 
 /datum/controller/subsystem/map_vote/proc/send_map_vote_notice(...)
 	var/static/last_message_at
 	if(last_message_at == world.time)
-		message_admins("Call to send_map_vote_notice twice in one game tick. Yell at someone to condense messages.")
+		message_admins("Duplicate map vote notice in same tick.")
 	last_message_at = world.time
 
 	var/list/messages = args.Copy()
@@ -57,7 +65,7 @@ SUBSYSTEM_DEF(map_vote)
 
 /datum/controller/subsystem/map_vote/proc/finalize_map_vote(datum/vote/map_vote/map_vote)
 	if(already_voted)
-		message_admins("Attempted to finalize a map vote after a map vote has already been finalized.")
+		message_admins("Map vote already finalized.")
 		return
 
 	already_voted = TRUE
@@ -65,26 +73,22 @@ SUBSYSTEM_DEF(map_vote)
 	var/flat = CONFIG_GET(number/map_vote_flat_bonus)
 	previous_cache = map_vote_cache.Copy()
 
-	for(var/map_name in map_vote.choices)
-		var/datum/map_config/map = null
-
-		for(var/id in config.maplist)
-			var/datum/map_config/cfg = config.maplist[id]
-			if(cfg.map_name == map_name)
-				map = cfg
-				break
-
-		if(!map)
+	// apply votes
+	for(var/map_id in map_vote.choices)
+		if(!(map_id in config.maplist))
 			continue
 
-		map_vote_cache[map_name] += (map_vote.choices[map_name] * map.voteweight) + flat
+		var/datum/map_config/cfg = config.maplist[map_id]
+		map_vote_cache[map_id] += (map_vote.choices[map_id] * cfg.voteweight) + flat
 
 	sanitize_cache()
+
 	write_cache()
+
 	update_tally_printout()
 
 	if(admin_override)
-		send_map_vote_notice("Admin Override is in effect. Map will not be changed.", "Tallies are recorded and saved.")
+		send_map_vote_notice("Admin override active. Map not changed.")
 		return
 
 	var/list/valid_maps = filter_cache_to_valid_maps()
@@ -92,114 +96,73 @@ SUBSYSTEM_DEF(map_vote)
 		send_map_vote_notice("No valid maps.")
 		return
 
-	var/winner = pick_weight(valid_maps)
-	var/datum/map_config/winner_cfg = null
-
-	for(var/id in config.maplist)
-		var/datum/map_config/cfg = config.maplist[id]
-		if(cfg.map_name == winner)
-			winner_cfg = cfg
-			break
+	// winner is now DIRECTLY a map_id
+	var/winner_id = pick_weight(valid_maps)
+	var/datum/map_config/winner_cfg = config.maplist[winner_id]
 
 	if(!winner_cfg)
-		send_map_vote_notice("Winner map could not be resolved.")
+		send_map_vote_notice("Winner map could not be resolved (bad map_id: [winner_id]).")
 		return
 
-	set_next_map(winner_cfg)
-	send_map_vote_notice("Map Selected - [span_bold(next_map_config.map_name)]")
+	if(!set_next_map(winner_cfg))
+		send_map_vote_notice("Failed to set next map.")
+		return
 
+	send_map_vote_notice("Map Selected - [span_bold(winner_cfg.map_name)]")
+
+	// decay winner so it doesn't repeat forever
 	if(length(valid_maps) > 1)
-		map_vote_cache[winner] = CONFIG_GET(number/map_vote_minimum_tallies)
+		map_vote_cache[winner_id] = CONFIG_GET(number/map_vote_minimum_tallies)
 		write_cache()
 		update_tally_printout()
-
-/// Returns a list of all map options that are invalid for the current population.
-/datum/controller/subsystem/map_vote/proc/get_valid_map_vote_choices()
-	var/list/valid_maps = list()
-
-	var/list/maps = shuffle(global.config.maplist)
-	for(var/map_id in maps)
-		var/datum/map_config/possible_config = config.maplist[map_id]
-		if(!possible_config.votable || (possible_config.map_name in SSpersistence.blocked_maps))
-			continue
-
-		valid_maps += possible_config.map_name
-
-	var/filter_threshold = 0
-	if(SSticker.HasRoundStarted())
-		filter_threshold = get_active_player_count(alive_check = FALSE, afk_check = TRUE, human_check = FALSE)
-	else
-		filter_threshold = length(GLOB.clients)
-
-	for(var/map_name in valid_maps.Copy())
-		var/datum/map_config/possible_config = null
-
-		for(var/id in config.maplist)
-			var/datum/map_config/cfg = config.maplist[id]
-			if(cfg.map_name == map_name)
-				possible_config = cfg
-				break
-
-		if(!possible_config)
-			valid_maps -= map_name
-			continue
-
-		if(possible_config.config_min_users > 0 && filter_threshold < possible_config.config_min_users)
-			valid_maps -= map_name
-
-		else if(possible_config.config_max_users > 0 && filter_threshold > possible_config.config_max_users)
-			valid_maps -= map_name
-
-	return valid_maps
 
 /datum/controller/subsystem/map_vote/proc/filter_cache_to_valid_maps()
 	var/connected_players = length(GLOB.player_list)
 	var/list/valid_maps = list()
 
-	for(var/map_name in map_vote_cache)
-		var/datum/map_config/map = null
+	for(var/map_id in map_vote_cache)
+		var/datum/map_config/cfg = config.maplist[map_id]
+		if(!cfg)
+			continue
+		if(!cfg.votable)
+			continue
+		if(cfg.config_min_users && connected_players < cfg.config_min_users)
+			continue
+		if(cfg.config_max_users && connected_players > cfg.config_max_users)
+			continue
 
-		for(var/id in config.maplist)
-			var/datum/map_config/cfg = config.maplist[id]
-			if(cfg.map_name == map_name)
-				map = cfg
-				break
-		if(!map)
-			continue
-		if(!map.votable)
-			continue
-		if(map.config_min_users > 0 && (connected_players < map.config_min_users))
-			continue
-		if(map.config_max_users > 0 && (connected_players > map.config_max_users))
-			continue
-		valid_maps[map_name] = map_vote_cache[map_name]
+		valid_maps[map_id] = map_vote_cache[map_id]
 
 	return valid_maps
 
 /datum/controller/subsystem/map_vote/proc/set_next_map(datum/map_config/change_to)
-	if(!change_to || !change_to.MakeNextMap())
-		message_admins("Failed to set new map with next_map.json for [change_to ? change_to.map_name : "NULL"]!")
+	if(!change_to.MakeNextMap())
+		message_admins("Failed to write next_map.json for [change_to.map_name]!")
 		return FALSE
 
 	next_map_config = change_to
 	return TRUE
 
 /datum/controller/subsystem/map_vote/proc/revert_next_map()
-	if(!next_map_config)
-		return
 	if(previous_cache)
 		map_vote_cache = previous_cache
 		previous_cache = null
 
 	already_voted = FALSE
 	admin_override = FALSE
-	send_map_vote_notice("Next map reverted. Voting re-enabled.")
 
-#undef MAP_VOTE_CACHE_LOCATION
+	send_map_vote_notice("Next map reverted. Voting re-enabled.")
+	update_tally_printout()
 
 /datum/controller/subsystem/map_vote/proc/update_tally_printout()
 	var/list/data = list()
+
 	for(var/map_id in map_vote_cache)
-		var/datum/map_config/map = config.maplist[map_id]
-		data += "[map.map_name] - [map_vote_cache[map_id]]"
-	tally_printout = examine_block("Current Tallies\n<hr>\n[data.Join("\n")]")
+		var/datum/map_config/cfg = config.maplist[map_id]
+		if(!cfg)
+			continue
+
+		data += "[cfg.map_name] - [map_vote_cache[map_id]]"
+
+	tally_printout = boxed_message("Current Tallies\n<hr>[data.Join("\n")]")
+

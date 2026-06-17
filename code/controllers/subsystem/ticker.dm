@@ -197,9 +197,8 @@ SUBSYSTEM_DEF(ticker)
 				var/mob/dead/new_player/player = i
 				if(player.ready == PLAYER_READY_TO_PLAY)
 					++totalPlayersReady
-
 			if(!gamemode_voted)
-				SSvote.initiate_vote("storyteller", "Psydon", timeLeft/2)
+				SSvote.initiate_vote("storyteller", "Server", null, forced = TRUE)
 				gamemode_voted = TRUE
 
 			if(start_immediately)
