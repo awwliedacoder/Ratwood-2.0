@@ -1722,7 +1722,7 @@
 	name = "Goggles"
 	icon_state = "indigo_zap"
 
-/datum/sprite_accessoary/hair/head/rainbowdash
+/datum/sprite_accessory/hair/head/rainbowdash
 	name = "Loyalty"
 	icon_state = "rainbow_dash"
 
