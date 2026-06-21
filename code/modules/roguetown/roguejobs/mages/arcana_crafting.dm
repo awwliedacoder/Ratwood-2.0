@@ -40,6 +40,7 @@
 	reqs = list(/obj/item/rogueore/cinnabar = 1,
 				/datum/reagent/water/blessed = 15)
 	craftdiff = 2
+	craft_xp_override = 0
 
 /datum/crafting_recipe/roguetown/arcana/ritechalk_unholy
 	name = "ritual chalk (unholy)"
@@ -48,6 +49,7 @@
 	reqs = list(/obj/item/rogueore/cinnabar = 1,
 				/datum/reagent/water/cursed = 15)
 	craftdiff = 2
+	craft_xp_override = 0
 
 /datum/crafting_recipe/roguetown/arcana/infernalfeather
 	name = "infernal feather"
