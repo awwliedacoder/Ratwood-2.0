@@ -82,6 +82,8 @@
 		H.adjust_skillrank_up_to(/datum/skill/craft/cooking, SKILL_LEVEL_MASTER, TRUE) // holy shit they can COOK
 		ADD_TRAIT(H, TRAIT_GOODLOVER, TRAIT_GENERIC)
 		ADD_TRAIT(H, TRAIT_ALCHEMY_EXPERT, TRAIT_GENERIC)
+		ADD_TRAIT(H, TRAIT_RITUALIST, TRAIT_GENERIC)//please don't let me regret doing this
+		H.put_in_hands(new /obj/item/ritechalk(H))
 	// if(H.patron?.type == /datum/patron/divine/astrata) I'm too lasy to ban Astratan LE but I'm certainly not dumb enough to give them +1 holy
 	//	H.adjust_skillrank(/datum/skill/magic/holy, 1, TRUE)
 	if(H.patron?.type == /datum/patron/divine/dendor)
@@ -112,6 +114,8 @@
 	if(H.patron?.type == /datum/patron/divine/eora)
 		ADD_TRAIT(H, TRAIT_BEAUTIFUL, TRAIT_GENERIC)
 		ADD_TRAIT(H, TRAIT_EMPATH, TRAIT_GENERIC)
+		ADD_TRAIT(H, TRAIT_RITUALIST, TRAIT_GENERIC)
+		H.put_in_hands(new /obj/item/ritechalk(H))
 	if(H.patron?.type == /datum/patron/divine/malum) // lol, lmao
 		H.adjust_skillrank_up_to(/datum/skill/craft/blacksmithing, SKILL_LEVEL_NOVICE, TRUE)
 		H.adjust_skillrank_up_to(/datum/skill/craft/armorsmithing, SKILL_LEVEL_NOVICE, TRUE)
@@ -123,7 +127,7 @@
 		H.adjust_skillrank_up_to(/datum/skill/misc/climbing, SKILL_LEVEL_EXPERT, TRUE)
 		H.adjust_skillrank_up_to(/datum/skill/misc/lockpicking, SKILL_LEVEL_NOVICE, TRUE)
 		H.adjust_skillrank_up_to(/datum/skill/misc/music, SKILL_LEVEL_NOVICE, TRUE)
-		ADD_TRAIT(H, TRAIT_RITUALIST, TRAIT_GENERIC)
+		ADD_TRAIT(H, TRAIT_RITUALIST, TRAIT_GENERIC) //please, god, be funny
 		H.put_in_hands(new /obj/item/ritechalk(H))
 	// -- End of section for god specific bonuses --
 
