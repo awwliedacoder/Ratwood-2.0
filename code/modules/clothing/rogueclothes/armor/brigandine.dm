@@ -218,7 +218,7 @@
 	blocksound = SOFTHIT
 	equip_delay_self = 4 SECONDS
 	unequip_delay_self = 4 SECONDS
-	max_integrity = ARMOR_INT_CHEST_PLATE_BRIGANDINE + 50
+	max_integrity = ARMOR_INT_CHEST_PLATE_STEEL // Makes the armor equivilient w/ half-plate.
 	sellprice = 363 // On par w/ judgement and ichor fang cuz why not
 	smelt_bar_num = 2
 	armor_class = ARMOR_CLASS_HEAVY
