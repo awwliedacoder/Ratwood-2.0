@@ -493,14 +493,9 @@ GLOBAL_LIST_INIT(binary, list("0","1"))
 
 	// Parse colour
 	if(!barebones)
-		var/regex/hexgex = regex(@"(?<=-=)(.{6})", "g")
-		while(hexgex.Find(t))
-			var/endblock = findtext(t, "=-", hexgex.index)
-			if(!endblock)
-				break
-			t = replacetext(t, "=-", "</font>", hexgex.index, endblock+2)
-			var/c_code = sanitize_hexcolor(hexgex.match)
-			t = replacetext(t, "-=[hexgex.match]", "<font color='[c_code]'>", hexgex.index-2, endblock+2)
+		var/regex/hexgex = regex(@"-=([A-Za-z0-9]{6})(.+?)=-", "g")
+		// group 1 - color. group 2 - affected text
+		t = hexgex.Replace_char(t, "<font color='$1'>$2</font>")
 
 	// Parse hr and small
 
