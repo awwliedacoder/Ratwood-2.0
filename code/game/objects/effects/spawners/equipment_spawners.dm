@@ -523,7 +523,7 @@
 	name = "confiscated item spawner"
 	icon_state = "heresy"
 	loot = list(
-		/obj/item/mattcoin = 5,
+		///obj/item/mattcoin = 5, Removing this for now. We don't want the garrison potentially getting access to bandit secure comms round start
 		/obj/item/reagent_containers/powder/herozium = 5,
 		/obj/item/reagent_containers/powder/starsugar = 5,
 		/obj/item/roguestatue/gold/loot = 5,
