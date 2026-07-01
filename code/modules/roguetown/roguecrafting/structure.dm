@@ -151,10 +151,40 @@
 	name = "wooden inverse cross"
 	reqs = list(
 		/obj/item/grown/log/tree/small = 1,
-		/obj/item/natural/stone = 2,
 		/obj/item/grown/log/tree/stake = 2
 	)
 	result = /obj/structure/fluff/psycross/zizocross
+
+/datum/crafting_recipe/roguetown/structure/zizo_shrine/stone
+	name = "stone inverse cross"
+	reqs = list(/obj/item/natural/stone = 3)
+	result = /obj/structure/fluff/psycross/zizocross/stone
+
+datum/crafting_recipe/roguetown/structure/zizo_shrine/gold
+	name = "gold inverse cross"
+	reqs = list(/obj/item/ingot/gold = 1,
+				/obj/item/ingot/steel = 2)
+	result = /obj/structure/fluff/psycross/zizocross/gold
+
+/datum/crafting_recipe/roguetown/structures/psycross/graggar
+	name = "stone graggarite cross"
+	reqs = list(/obj/item/natural/stone = 3)
+	result = /obj/structure/fluff/psycross/graggar
+
+/datum/crafting_recipe/roguetown/structures/psycross/matthios
+	name = "stone matthios cross"
+	reqs = list(/obj/item/natural/stone = 3)
+	result = /obj/structure/fluff/psycross/matthios
+
+/datum/crafting_recipe/roguetown/structures/psycross/baotha
+	name = "stone baotha cross"
+	reqs = list(/obj/item/natural/stone = 3)
+	result = /obj/structure/fluff/psycross/baotha
+
+/datum/crafting_recipe/roguetown/structures/psycross/necra
+	name = "stone necra cross"
+	reqs = list(/obj/item/natural/stone = 3)
+	result = /obj/structure/fluff/psycross/crafted/necra
 
 /datum/crafting_recipe/roguetown/structure/swing_door
 	name = "swing door"
@@ -175,6 +205,23 @@
 	verbage_simple = "build"
 	verbage = "builds"
 	skillcraft = /datum/skill/craft/masonry
+
+/datum/crafting_recipe/roguetown/structure/donjon
+	name = "metal door"
+	result = /obj/structure/mineral_door/wood/donjon
+	reqs = list(/obj/item/grown/log/tree/small = 1, /obj/item/ingot/iron = 2)
+	verbage_simple = "build"
+	verbage = "builds"
+	skillcraft = /datum/skill/craft/carpentry
+
+/datum/crafting_recipe/roguetown/structure/celldoor
+	name = "cell door"
+	result =  /obj/structure/mineral_door/bars
+	reqs = list(/obj/item/ingot/iron = 2)
+	verbage_simple = "build"
+	verbage = "builds"
+	skillcraft = /datum/skill/craft/engineering
+	craftdiff = 1
 
 /datum/crafting_recipe/roguetown/structure/doorbolt
 	name = "wooden door (deadbolt)"
@@ -864,6 +911,66 @@
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 1
 
+//icon signs
+
+/datum/crafting_recipe/roguetown/structure/sign/zizoiconsign
+	name = "wooden zizo sign"
+	result = /obj/structure/fluff/iconsign/zizosign
+	reqs = list(/obj/item/grown/log/tree/small = 1)
+	skillcraft = /datum/skill/craft/carpentry
+	craftdiff = 1
+
+/datum/crafting_recipe/roguetown/structure/sign/psydoniconsign
+	name = "wooden psydon sign"
+	result = /obj/structure/fluff/iconsign/psycrosssign
+	reqs = list(/obj/item/grown/log/tree/small = 1)
+	skillcraft = /datum/skill/craft/carpentry
+	craftdiff = 1
+
+/datum/crafting_recipe/roguetown/structure/sign/eaglesign
+	name = "wooden eagle sign"
+	result = /obj/structure/fluff/iconsign/eaglesign
+	reqs = list(/obj/item/grown/log/tree/small = 1)
+	skillcraft = /datum/skill/craft/carpentry
+	craftdiff = 1
+
+/datum/crafting_recipe/roguetown/structure/sign/spidersign
+	name = "wooden spider sign"
+	result = /obj/structure/fluff/iconsign/spidersign
+	reqs = list(/obj/item/grown/log/tree/small = 1)
+	skillcraft = /datum/skill/craft/carpentry
+	craftdiff = 1
+
+/datum/crafting_recipe/roguetown/structure/sign/smithsign
+	name = "wooden smith sign"
+	result = /obj/structure/fluff/iconsign/smithsign
+	reqs = list(/obj/item/grown/log/tree/small = 1)
+	skillcraft = /datum/skill/craft/carpentry
+	craftdiff = 1
+
+/datum/crafting_recipe/roguetown/structure/sign/innsign
+	name = "wooden inn sign"
+	result = /obj/structure/fluff/iconsign/innsign
+	reqs = list(/obj/item/grown/log/tree/small = 1)
+	skillcraft = /datum/skill/craft/carpentry
+	craftdiff = 1
+
+/datum/crafting_recipe/roguetown/structure/sign/elksign
+	name = "wooden elk sign"
+	result = /obj/structure/fluff/iconsign/elksign
+	reqs = list(/obj/item/grown/log/tree/small = 1)
+	skillcraft = /datum/skill/craft/carpentry
+	craftdiff = 1
+
+/datum/crafting_recipe/roguetown/structure/sign/skullsign
+	name = "wooden skull sign"
+	result = /obj/structure/fluff/iconsign/skullsign
+	reqs = list(/obj/item/grown/log/tree/small = 1)
+	skillcraft = /datum/skill/craft/carpentry
+	craftdiff = 1
+
+// end of icon signs
+
 /datum/crafting_recipe/roguetown/structure/dummy
 	name = "training dummy"
 	result = /obj/structure/fluff/statue/tdummy
@@ -925,6 +1032,16 @@
 	name = "wall candles blue"
 	result = /obj/machinery/light/rogue/candle/blue
 	reqs = list(/obj/item/natural/stone = 1, /obj/item/candle/yellow = 1, /obj/item/ash = 1)
+	verbage_simple = "build"
+	verbage = "builds"
+	skillcraft = /datum/skill/craft/masonry
+	wallcraft = TRUE
+	craftdiff = 0
+
+/datum/crafting_recipe/roguetown/structure/walllantern
+	name = "wall lantern"
+	result = /obj/machinery/light/roguestreet/orange/walllamp
+	reqs = list(/obj/item/flashlight/flare/torch/lantern = 1)
 	verbage_simple = "build"
 	verbage = "builds"
 	skillcraft = /datum/skill/craft/masonry
@@ -1217,6 +1334,23 @@
 	skillcraft = /datum/skill/craft/masonry
 	wallcraft = TRUE
 
+/datum/crafting_recipe/roguetown/structure/fireplace/blue
+	name = "Blue fireplace (North)"
+	result = /obj/machinery/light/rogue/campfire/fireplace/blue
+	reqs = list(/obj/item/grown/log/tree/small = 1,
+				/obj/item/natural/stoneblock = 3,
+				/obj/item/rogueore/copper = 1) //did you know that copper not only can produce green fire but blue too in high concentration?
+
+/datum/crafting_recipe/roguetown/structure/fireplace/large
+	name = "Large fireplace (North, 2 tiles)"
+	result = /obj/machinery/light/rogue/campfire/fireplace/grand
+	reqs = list(/obj/item/grown/log/tree/small = 2,
+				/obj/item/natural/stoneblock = 6)
+	verbage_simple = "build"
+	verbage = "builds"
+	skillcraft = /datum/skill/craft/masonry
+	wallcraft = TRUE
+
 /datum/crafting_recipe/roguetown/structure/mirror
 	name = "mirror (north)"
 	result = /obj/structure/mirror
@@ -1237,7 +1371,7 @@
 				/obj/item/natural/glass = 1)
 	skillcraft = /datum/skill/craft/carpentry
 	wallcraft = TRUE
-	craftdiff = 5
+	craftdiff = 5table
 
 /datum/crafting_recipe/roguetown/structure/floorclock
 	name = "Floor Clock"
@@ -1309,6 +1443,13 @@
 	reqs = list(/obj/item/natural/wood/plank = 1)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 2
+
+/datum/crafting_recipe/roguetown/structure/actualfancytable
+	name = "Metallic Wooden Table"
+	result = /obj/structure/table/wood
+	reqs = list(/obj/item/natural/wood/plank = 2)
+	skillcraft = /datum/skill/craft/carpentry
+	craftdiff = 3
 
 /datum/crafting_recipe/roguetown/structure/ornatetable
 	name = "Ornate Wooden Table"

@@ -153,7 +153,15 @@
 	baseturfs = list(/turf/open/floor/rogue/blocks)
 	neighborlay = "dirtedge"
 	climbdiff = 4
-	damage_deflection = 20
+	damage_deflection = 20 
+
+/turf/closed/wall/mineral/rogue/stonebrick/stonebricklight
+	name = "lit stone brick wall"
+	desc = "Rows of overlapping bricks form this wall, this one glows with a soft light."
+	icon = 'icons/turf/roguewall.dmi'
+	icon_state = "stonebricklight"
+	light_outer_range = 4
+	bulb_colour = "#ffa35c" // this should make the wall glow theoretically at least
 
 /turf/closed/wall/mineral/rogue/wood
 	name = "wooden wall"
