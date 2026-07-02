@@ -706,7 +706,7 @@
 	wallcraft = TRUE
 
 /datum/crafting_recipe/roguetown/structure/tanningrack
-	name = "drying rack"
+	name = "drying rack (3 sticks)"
 	result = /obj/machinery/tanningrack
 	reqs = list(/obj/item/grown/log/tree/stick = 3)
 	craftdiff = 0
@@ -757,7 +757,7 @@
 	craftdiff = 2
 
 /datum/crafting_recipe/roguetown/structure/table
-	name = "wooden table"
+	name = "wooden table (1 small log)"
 	result = /obj/structure/table/wood/crafted
 	reqs = list(/obj/item/grown/log/tree/small = 1)
 	skillcraft = /datum/skill/craft/carpentry
@@ -826,35 +826,35 @@
 	craftdiff = 4
 
 /datum/crafting_recipe/roguetown/structure/longtable
-	name = "nice long table"
+	name = "nice long table (2 planks)"
 	result = /obj/structure/table/wood/long_table
 	reqs = list(/obj/item/natural/wood/plank = 2)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 4
 
 /datum/crafting_recipe/roguetown/structure/longtablealt
-	name = "nice long table(middle)"
+	name = "nice long table(middle) (2 planks)"
 	result = /obj/structure/table/wood/long_table/mid/alt
 	reqs = list(/obj/item/natural/wood/plank = 2)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 4
 
 /datum/crafting_recipe/roguetown/structure/largetable
-	name = "large table"
+	name = "large table (2 planks)"
 	result = /obj/structure/table/wood/large_table
 	reqs = list(/obj/item/natural/wood/plank = 2)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 3
 
 /datum/crafting_recipe/roguetown/structure/operatingtable
-	name = "operating table"
+	name = "operating table (2 small logs)"
 	result = /obj/structure/table/optable
 	reqs = list(/obj/item/grown/log/tree/small = 2)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 2
 
 /datum/crafting_recipe/roguetown/structure/stonetable
-	name = "stone table"
+	name = "stone table (1 stone)"
 	result = /obj/structure/table/church
 	reqs = list(/obj/item/natural/stone = 1)
 	verbage_simple = "build"
@@ -862,7 +862,7 @@
 	skillcraft = /datum/skill/craft/masonry
 
 /datum/crafting_recipe/roguetown/structure/finestonetable
-	name = "fine stone table"
+	name = "fine stone table (1 stone block)"
 	result = /obj/structure/table/finestone
 	reqs = list(/obj/item/natural/stoneblock = 1)
 	verbage_simple = "build"
@@ -914,56 +914,56 @@
 //icon signs
 
 /datum/crafting_recipe/roguetown/structure/sign/zizoiconsign
-	name = "wooden zizo sign"
+	name = "wooden zizo sign (1 small log)"
 	result = /obj/structure/fluff/iconsign/zizosign
 	reqs = list(/obj/item/grown/log/tree/small = 1)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 1
 
 /datum/crafting_recipe/roguetown/structure/sign/psydoniconsign
-	name = "wooden psydon sign"
+	name = "wooden psydon sign (1 small log)"
 	result = /obj/structure/fluff/iconsign/psycrosssign
 	reqs = list(/obj/item/grown/log/tree/small = 1)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 1
 
 /datum/crafting_recipe/roguetown/structure/sign/eaglesign
-	name = "wooden eagle sign"
+	name = "wooden eagle sign (1 small log)"
 	result = /obj/structure/fluff/iconsign/eaglesign
 	reqs = list(/obj/item/grown/log/tree/small = 1)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 1
 
 /datum/crafting_recipe/roguetown/structure/sign/spidersign
-	name = "wooden spider sign"
+	name = "wooden spider sign (1 small log)"
 	result = /obj/structure/fluff/iconsign/spidersign
 	reqs = list(/obj/item/grown/log/tree/small = 1)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 1
 
 /datum/crafting_recipe/roguetown/structure/sign/smithsign
-	name = "wooden smith sign"
+	name = "wooden smith sign (1 small log)"
 	result = /obj/structure/fluff/iconsign/smithsign
 	reqs = list(/obj/item/grown/log/tree/small = 1)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 1
 
 /datum/crafting_recipe/roguetown/structure/sign/innsign
-	name = "wooden inn sign"
+	name = "wooden inn sign (1 small log)"
 	result = /obj/structure/fluff/iconsign/innsign
 	reqs = list(/obj/item/grown/log/tree/small = 1)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 1
 
 /datum/crafting_recipe/roguetown/structure/sign/elksign
-	name = "wooden elk sign"
+	name = "wooden elk sign (1 small log)"
 	result = /obj/structure/fluff/iconsign/elksign
 	reqs = list(/obj/item/grown/log/tree/small = 1)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 1
 
 /datum/crafting_recipe/roguetown/structure/sign/skullsign
-	name = "wooden skull sign"
+	name = "wooden skull sign (1 small log)"
 	result = /obj/structure/fluff/iconsign/skullsign
 	reqs = list(/obj/item/grown/log/tree/small = 1)
 	skillcraft = /datum/skill/craft/carpentry
@@ -1315,7 +1315,7 @@
 	craftdiff = 4
 
 /datum/crafting_recipe/roguetown/structure/fireplace
-	name = "Fireplace (North)"
+	name = "fireplace (north)"
 	result = /obj/machinery/light/rogue/campfire/fireplace/crafted
 	reqs = list(/obj/item/grown/log/tree/small = 1,
 				/obj/item/natural/stoneblock = 3)
@@ -1325,7 +1325,7 @@
 	wallcraft = TRUE
 
 /datum/crafting_recipe/roguetown/structure/fireplace/blue
-	name = "Blue fireplace (North)"
+	name = "blue fireplace (north)"
 	result = /obj/machinery/light/rogue/campfire/fireplace/crafted/blue
 	reqs = list(/obj/item/grown/log/tree/small = 1,
 				/obj/item/natural/stoneblock = 3,
@@ -1354,14 +1354,14 @@
 	craftdiff = 5
 
 /datum/crafting_recipe/roguetown/structure/floorclock
-	name = "Floor Clock"
+	name = "floor clock (anchored)"
 	result = /obj/structure/fluff/clock
 	reqs = list(/obj/item/natural/wood/plank = 2,/obj/item/roguegear/bronze = 1, /obj/item/ingot/iron = 1)
 	skillcraft = /datum/skill/craft/engineering
 	craftdiff = 2
 
 /datum/crafting_recipe/roguetown/structure/wallclock
-	name = "Wall Clock (North)"
+	name = "wall clock (north)"
 	result = /obj/structure/fluff/wallclock
 	reqs = list(/obj/item/natural/wood/plank = 2,/obj/item/roguegear/bronze = 1, /obj/item/ingot/iron = 1)
 	skillcraft = /datum/skill/craft/engineering
@@ -1369,70 +1369,70 @@
 	wallcraft = TRUE
 
 /datum/crafting_recipe/roguetown/structure/drawer1// oh boy time to add drawers for all five of them, drawers are randomized and theres five different sprites that are all unique enough
-	name = "Long Dresser"
+	name = "long dresser (2 planks)"
 	result = /obj/structure/closet/crate/drawer/drawer2
 	reqs= list(/obj/item/natural/wood/plank = 2)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 2
 
 /datum/crafting_recipe/roguetown/structure/drawer2
-	name = "Long Dresser (Alt)"
+	name = "long dresser (alt) (2 planks)"
 	result = /obj/structure/closet/crate/drawer/drawer2
 	reqs = list(/obj/item/natural/wood/plank = 2)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 2
 
 /datum/crafting_recipe/roguetown/structure/drawer3
-	name = "Tall and long Dresser"
+	name = "tall and long dresser (2 planks)"
 	result = /obj/structure/closet/crate/drawer/drawer3
 	reqs = list(/obj/item/natural/wood/plank = 2)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 2
 
 /datum/crafting_recipe/roguetown/structure/drawer4
-	name = "Tall and skinny Dresser"
+	name = "tall and skinny dresser (2 planks)"
 	result = /obj/structure/closet/crate/drawer/drawer4
 	reqs = list(/obj/item/natural/wood/plank = 2)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 2
 
 /datum/crafting_recipe/roguetown/structure/drawer5
-	name = "Bedside Drawer"
+	name = "bedside drawer (2 planks)"
 	result = /obj/structure/closet/crate/drawer
 	reqs = list(/obj/item/natural/wood/plank = 2)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 2
 
 /datum/crafting_recipe/roguetown/structure/telescope
-	name = "Telescope"
+	name = "telescope"
 	result = /obj/structure/telescope
 	reqs = list(/obj/item/grown/log/tree/stick = 2, /obj/item/ingot/iron = 1, /obj/item/natural/glass = 1)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 2
 
 /datum/crafting_recipe/roguetown/structure/globe
-	name = "Globe"
+	name = "globe"
 	result = /obj/structure/globe
 	reqs = list(/obj/item/grown/log/tree/stick = 2, /obj/item/natural/wood/plank = 3)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 3
 
 /datum/crafting_recipe/roguetown/structure/tablewood3
-	name = "Wooden Table (Alt)"
+	name = "wooden table (alt) (1 plank)"
 	result = /obj/structure/table/wood/poor/alt_alt
 	reqs = list(/obj/item/natural/wood/plank = 1)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 2
 
 /datum/crafting_recipe/roguetown/structure/actualfancytable
-	name = "Metallic Wooden Table"
+	name = "metallic wooden table (2 planks)"
 	result = /obj/structure/table/wood
 	reqs = list(/obj/item/natural/wood/plank = 2)
 	skillcraft = /datum/skill/craft/carpentry
 	craftdiff = 3
 
 /datum/crafting_recipe/roguetown/structure/ornatetable
-	name = "Ornate Wooden Table"
+	name = "ornate wooden table (2 planks)"
 	result = /obj/structure/table/fine
 	reqs = list(/obj/item/natural/wood/plank = 2)
 	skillcraft = /datum/skill/craft/carpentry
@@ -1441,7 +1441,7 @@
 // hanging chains
 
 /datum/crafting_recipe/roguetown/structure/hangingchains
-	name = "Hanging Chains"
+	name = "hanging chains (2 chains)"
 	result = /obj/structure/fluff/walldeco/chains
 	reqs = list(/obj/item/rope/chain = 2)
 	skillcraft = /datum/skill/craft/engineering
@@ -1450,7 +1450,7 @@
 // floor candles
 
 /datum/crafting_recipe/roguetown/structure/floorcandle
-	name = "floor candles"
+	name = "floor candles (2 candles)"
 	result = /obj/machinery/light/rogue/candle/floorcandle
 	reqs = list(/obj/item/candle/yellow = 2)
 	verbage_simple = "build"
@@ -1461,7 +1461,7 @@
 
 
 /datum/crafting_recipe/roguetown/structure/floorcandlealt
-	name = "alt floor candles"
+	name = "alt floor candles (2 candles)"
 	result = /obj/machinery/light/rogue/candle/floorcandle/alt
 	reqs = list(/obj/item/candle/yellow = 2)
 	verbage_simple = "build"
