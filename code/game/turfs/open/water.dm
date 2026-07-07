@@ -334,8 +334,6 @@
 			if(C.is_mouth_covered())
 				return
 		user.visible_message(span_info("[user] starts to drink from [src]."))
-		if(istype(src, /turf/open/water/sewer))
-			to_chat(user, span_userdanger("Have I gone mad!? Why am I drinking sewage?"))
 		playsound(user, pick('sound/foley/waterwash (1).ogg','sound/foley/waterwash (2).ogg'), 100, FALSE)
 		drink_act(user, L)
 		return
@@ -429,6 +427,19 @@
 	icon_state = "paving"
 	water_color = pick("#705a43","#697043", "#6C6543")
 	.  = ..()
+
+/turf/open/water/sewer/onbite(mob/user)
+	// I think it's okay to have these checks copy-pasted for something you really, *really* aren't supposed to be doing anyways.
+	if(isliving(user))
+		var/mob/living/L = user
+		if(L.stat != CONSCIOUS)
+			return
+		if(iscarbon(user))
+			var/mob/living/carbon/C = user
+			if(C.is_mouth_covered())
+				return
+		to_chat(L, span_userdanger("Have I gone mad!? Why am I drinking sewage?"))
+	..()
 
 /turf/open/water/swamp
 	name = "murk"
