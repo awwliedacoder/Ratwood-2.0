@@ -519,7 +519,7 @@
 	reqs = list(/obj/item/grown/log/tree/small = 2, /obj/item/natural/glass = 1, /obj/item/ingot/iron = 1)
 	craftdiff = 3
 
-// Dark Wood Walls - also fixes my mistake because I was an idiot and capitalized them
+// Dark Wood Walls
 
 /datum/crafting_recipe/roguetown/turfs/wood/darkwoodwall
 	name = "dark wood wall (2 wood planks)"
