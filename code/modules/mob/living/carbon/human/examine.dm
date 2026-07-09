@@ -415,7 +415,7 @@
 
 	if(user != src && get_dist(user, src) <= 3)
 		var/datum/charflaw/malodorous/malodorous_flaw = src.get_flaw(/datum/charflaw/malodorous)
-		if(malodorous_flaw && malodorous_flaw.is_reeking())
+		if((malodorous_flaw && malodorous_flaw.is_reeking()) || has_status_effect(/datum/status_effect/debuff/stinky_contact))
 			var/can_see_stink = !isliving(user) // adminghost always sees it
 			if(isliving(user))
 				var/mob/living/living_user = user

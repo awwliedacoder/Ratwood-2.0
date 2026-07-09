@@ -104,6 +104,7 @@
 				target.add_stress(/datum/stressevent/bath)
 			var/datum/charflaw/malodorous/malodorous_flaw = target.get_flaw(/datum/charflaw/malodorous)
 			malodorous_flaw?.on_bath(target)
+			target:remove_status_effect(/datum/status_effect/debuff/stinky_contact)
 			uses -= 1
 			if(uses == 0)
 				qdel(src)
