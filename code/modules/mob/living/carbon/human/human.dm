@@ -648,14 +648,14 @@
 	if(!hud_used || stat == DEAD || !hud_used.stamina)
 		return FALSE
 	var/ratio = max_stamina ? (1 - (stamina / max_stamina)) : 0
-	hud_used.stamina.set_meter_fill(ratio, "stam100", "stam10")
+	hud_used.stamina.set_meter_fill(ratio, "stam100", "stam20", "stam10")
 	return TRUE
 
 /mob/living/carbon/human/update_energy_hud()
 	if(!hud_used || stat == DEAD || !hud_used.energy)
 		return FALSE
 	var/ratio = max_energy ? (energy / max_energy) : 0
-	hud_used.energy.set_meter_fill(ratio, "energy100", "energy10")
+	hud_used.energy.set_meter_fill(ratio, "energy100", "energy20", "energy10")
 	return TRUE
 
 /mob/living/carbon/human/fully_heal(admin_revive = FALSE, break_restraints = FALSE)
