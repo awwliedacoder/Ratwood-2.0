@@ -16,7 +16,7 @@ SUBSYSTEM_DEF(memory_stats)
 /// Returns the process resident set size in bytes, or null if unavailable on this platform
 /proc/get_process_rss_bytes()
 	if(world.system_type == UNIX)
-		var/status = file2text("/proc/self/status")
+		var/status = rustg_file_read("/proc/self/status")
 		if(status)
 			var/regex/rss_regex = regex(@"VmRSS:\s+(\d+) kB")
 			if(rss_regex.Find(status))
