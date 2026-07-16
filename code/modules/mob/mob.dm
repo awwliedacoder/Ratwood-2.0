@@ -818,6 +818,7 @@ GLOBAL_VAR_INIT(mobids, 1)
 			stat(null, "IC Time: [station_time_timestamp()] [station_time()]")
 			stat(null, "PING: [round(client.lastping, 1)]ms (Average: [round(client.avgping, 1)]ms)")
 			stat(null, "TIME DILATION: [round(SStime_track.time_dilation_current,1)]% AVG:([round(SStime_track.time_dilation_avg_fast,1)]%, [round(SStime_track.time_dilation_avg,1)]%, [round(SStime_track.time_dilation_avg_slow,1)]%)")
+			stat(null, "Memory: [SSmemory_stats.last_rss_mb ? "[SSmemory_stats.last_rss_mb] MB/4000 MB" : "sampling..."]")
 			if(check_rights(R_ADMIN,0))
 				stat(null, SSmigrants.get_status_line())
 				stat(null, "Player count: [GLOB.clients.len]") // If someone deletes this again I will slap your balls
