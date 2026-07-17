@@ -93,7 +93,7 @@
 	icon_state = "lbracers"
 	item_state = "lbracers"
 	max_integrity = ARMOR_INT_SIDE_LEATHER
-	armor = ARMOR_PADDED
+	armor = ARMOR_LEATHER
 	prevent_crits = list(BCLASS_CUT, BCLASS_STAB, BCLASS_BLUNT, BCLASS_TWIST)
 	blocksound = SOFTHIT
 	blade_dulling = DULLING_BASHCHOP
