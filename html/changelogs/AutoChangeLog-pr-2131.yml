@@ -1,0 +1,5 @@
+author: "Arturlang"
+delete-after: True
+changes:
+  - bugfix: "improve how stamina and fatigue updates were handled for optimization purpose"
+  - rscadd: "stamina and fatigue bars now use a alpha mask and animate between states, and no longer use icon variants for each type, with a alpha mask cutting the icon dynamically."
