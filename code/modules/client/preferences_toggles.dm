@@ -469,10 +469,8 @@
 	prefs.save_preferences()
 	if(prefs.voting_popup)
 		to_chat(src, "You will see a popup of the voting ui as a vote is called.")
-		return
 	else
 		to_chat(src, "You will no longer see a popup of the voting ui as a vote is called.")
-		return
 
 	
 /client/verb/toggle_cursed_collars() // Toggles cursed collars. Will drop existing collars if toggled off while wearing one
