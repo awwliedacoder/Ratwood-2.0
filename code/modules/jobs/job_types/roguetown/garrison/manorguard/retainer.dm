@@ -1,15 +1,16 @@
-// Melee goon. STR and martial setup.
-/datum/advclass/manorguard/footsman
-	name = "Footman"
-	tutorial = "You are a professional soldier of the realm, specializing in melee warfare. Stalwart and hardy, your body can both withstand and dish out powerful strikes.."
-	outfit = /datum/outfit/job/roguetown/manorguard/footsman
-
+// special old class ported from RW1
+/datum/advclass/manorguard/retainer
+	name = "Retainer"
+	tutorial = "You are an aging man-at-arms who has spent decades in faithful service. Though the vigor of youth has faded, discipline and experience remain."
+	outfit = /datum/outfit/job/roguetown/manorguard/retainer
+	allowed_ages = list(AGE_OLD)
 	category_tags = list(CTAG_MENATARMS)
 	traits_applied = list(TRAIT_MEDIUMARMOR)
 	subclass_stats = list(
-		STATKEY_STR = 2,// seems kinda lame but remember guardsman bonus!!
+		STATKEY_STR = 1,// seems kinda lame but remember guardsman bonus!!
 		STATKEY_INT = 1,
-		STATKEY_CON = 1,
+		STATKEY_PER = 1,
+		STATKEY_CON = 2,
 		STATKEY_WIL = 1
 	)
 	subclass_skills = list(
@@ -33,13 +34,12 @@
 		/datum/skill/misc/tracking = SKILL_LEVEL_NOVICE,
 	)
 
-/datum/outfit/job/roguetown/manorguard/footsman/pre_equip(mob/living/carbon/human/H)
+/datum/outfit/job/roguetown/manorguard/retainer/pre_equip(mob/living/carbon/human/H)
 	..()
-
 	shirt = /obj/item/clothing/suit/roguetown/armor/gambeson
 	neck = /obj/item/clothing/neck/roguetown/gorget
 	gloves = /obj/item/clothing/gloves/roguetown/plate/iron
-	beltl = /obj/item/rogueweapon/mace/cudgel
+	beltl = /obj/item/rogueweapon/sword/decorated
 	H.adjust_blindness(-3)
 	if(H.mind)
 		var/weapons = list("Warhammer & Shield","Axe & Shield","Halberd","Greataxe")
