@@ -105,8 +105,13 @@
 		/datum/skill/combat/bows = SKILL_LEVEL_APPRENTICE,
 		/datum/skill/misc/swimming = SKILL_LEVEL_APPRENTICE,
 	)
-
 	extra_context = "This class gains Master skill in their weapon of choice."
+
+	virtue_restrictions = list(
+		/datum/virtue/utility/riding
+	)
+	subclass_stashed_items = list("Caparison (Saiga)" = /obj/item/caparison, "Caparison (Fogbeast)" = /obj/item/caparison/fogbeast)
+	extra_context = "This class gains Master skill in their weapon of choice. This subclass receives a caparison in its stash. Use the Saiga or Fogbeast version depending on your mount."
 
 /datum/outfit/job/roguetown/captain/infantry/pre_equip(mob/living/carbon/human/H)
 	..()
@@ -114,7 +119,7 @@
 	backpack_contents = list(
 		/obj/item/storage/keyring/kcaptain = 1,
 		/obj/item/rogueweapon/huntingknife/idagger/steel/special = 1,
-		/obj/item/rogueweapon/scabbard/sheath = 1,
+		/obj/item/rogueweapon/scabbard/sheath/royal = 1,
 		/obj/item/reagent_containers/glass/bottle/rogue/healthpot = 1,
 		)
 	if(H.mind)
@@ -143,7 +148,7 @@
 				H.adjust_skillrank_up_to(/datum/skill/combat/swords, 5, TRUE)
 				r_hand = /obj/item/rogueweapon/sword/capsabre
 				l_hand = /obj/item/rogueweapon/shield/capbuckler
-				beltr = /obj/item/rogueweapon/scabbard/sword
+				beltr = /obj/item/rogueweapon/scabbard/sword/royal
 			if("Glaive")
 				H.adjust_skillrank_up_to(/datum/skill/combat/polearms, 5, TRUE)
 				r_hand = /obj/item/rogueweapon/halberd/capglaive

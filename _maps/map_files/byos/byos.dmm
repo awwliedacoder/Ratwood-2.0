@@ -3257,7 +3257,6 @@
 	name = "Door of Gluttony";
 	locked = 1;
 	lockid = "gluttony";
-	can_be_picked = 0;
 	masterkey = 0;
 	max_integrity = 999999
 	},
@@ -5297,7 +5296,7 @@
 	},
 /area/rogue/indoors)
 "fXv" = (
-/turf/closed,
+/turf/closed/void,
 /turf/closed/mineral/rogue/bedrock,
 /area/rogue/under/cave)
 "fXD" = (
@@ -6068,7 +6067,7 @@
 	},
 /area/rogue/indoors/inq/boat/basement)
 "gJn" = (
-/turf/closed/basic,
+/turf/closed/void,
 /area/rogue)
 "gJy" = (
 /obj/item/roguecoin/gold/pile,
@@ -8244,7 +8243,6 @@
 	name = "Door of Sloth";
 	locked = 1;
 	lockid = "sloth";
-	can_be_picked = 0;
 	masterkey = 0;
 	max_integrity = 999999
 	},
@@ -10196,7 +10194,6 @@
 	name = "Door of Pride";
 	locked = 1;
 	lockid = "pride";
-	can_be_picked = 0;
 	masterkey = 0;
 	max_integrity = 999999
 	},
@@ -10527,7 +10524,6 @@
 	name = "Door of Lust";
 	locked = 1;
 	lockid = "lust";
-	can_be_picked = 0;
 	masterkey = 0;
 	max_integrity = 999999
 	},
@@ -11291,7 +11287,6 @@
 	name = "Door of Envy";
 	locked = 1;
 	lockid = "envy";
-	can_be_picked = 0;
 	masterkey = 0;
 	max_integrity = 999999
 	},
@@ -11762,9 +11757,6 @@
 	dir = 8
 	},
 /area/rogue/indoors/inq/boat/office)
-"mFf" = (
-/turf/closed,
-/area/rogue)
 "mFn" = (
 /obj/effect/decal/cobbleedge{
 	dir = 4;
@@ -12682,7 +12674,7 @@
 /area/rogue/under/cave/tribeden)
 "nGj" = (
 /mob/living/simple_animal/hostile/retaliate/rogue/mole{
-	STAEND = 13;
+	STAWIL = 13;
 	STASTR = 24;
 	health = 500;
 	faction = list("undead")
@@ -20375,7 +20367,6 @@
 	name = "Door of Greed";
 	locked = 1;
 	lockid = "greed";
-	can_be_picked = 0;
 	masterkey = 0;
 	max_integrity = 999999
 	},
@@ -21668,7 +21659,6 @@
 	name = "Door of Wrath";
 	locked = 1;
 	lockid = "wrath";
-	can_be_picked = 0;
 	masterkey = 0;
 	max_integrity = 999999
 	},
@@ -22257,7 +22247,7 @@
 /turf/open/floor/rogue/naturalstone,
 /area/rogue/under/cave)
 "xtU" = (
-/turf/closed/basic,
+/turf/closed/void,
 /area/rogue/under/cave)
 "xud" = (
 /obj/structure/stairs/stone,
@@ -44121,12 +44111,12 @@ dxV
 aPO
 nFS
 nFS
-mFf
-mFf
-mFf
-mFf
-mFf
-mFf
+gJn
+gJn
+gJn
+gJn
+gJn
+gJn
 gJn
 gJn
 gJn
@@ -44323,12 +44313,12 @@ pcB
 aPO
 nFS
 nFS
-mFf
-mFf
-mFf
-mFf
-mFf
-mFf
+gJn
+gJn
+gJn
+gJn
+gJn
+gJn
 gJn
 gJn
 gJn
@@ -44525,12 +44515,12 @@ kYd
 kYd
 nFS
 nFS
-mFf
-mFf
-mFf
-mFf
-mFf
-mFf
+gJn
+gJn
+gJn
+gJn
+gJn
+gJn
 gJn
 gJn
 gJn
@@ -44727,12 +44717,12 @@ gSJ
 aPO
 nFS
 nFS
-mFf
-mFf
-mFf
-mFf
-mFf
-mFf
+gJn
+gJn
+gJn
+gJn
+gJn
+gJn
 gJn
 gJn
 gJn
@@ -44929,12 +44919,12 @@ iWk
 kYd
 nFS
 nFS
-mFf
-mFf
-mFf
-mFf
-mFf
-mFf
+gJn
+gJn
+gJn
+gJn
+gJn
+gJn
 gJn
 gJn
 gJn
@@ -45131,12 +45121,12 @@ kYd
 nFS
 nFS
 nFS
-mFf
-mFf
-mFf
-mFf
-mFf
-mFf
+gJn
+gJn
+gJn
+gJn
+gJn
+gJn
 gJn
 gJn
 gJn
@@ -45333,12 +45323,12 @@ nFS
 nFS
 nFS
 nFS
-mFf
-mFf
-mFf
-mFf
-mFf
-mFf
+gJn
+gJn
+gJn
+gJn
+gJn
+gJn
 gJn
 gJn
 gJn
@@ -45535,12 +45525,12 @@ nFS
 nFS
 nFS
 nFS
-mFf
-mFf
-mFf
-mFf
-mFf
-mFf
+gJn
+gJn
+gJn
+gJn
+gJn
+gJn
 gJn
 gJn
 gJn
@@ -45737,12 +45727,12 @@ nFS
 nFS
 gJn
 gJn
-mFf
-mFf
-mFf
-mFf
-mFf
-mFf
+gJn
+gJn
+gJn
+gJn
+gJn
+gJn
 gJn
 gJn
 gJn

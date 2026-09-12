@@ -9,7 +9,7 @@
 	. = ..()
 	default_choices = SSmap_vote.get_valid_map_vote_choices()
 
-/datum/vote/map_vote/create_vote()
+/datum/vote/map_vote/create_vote(mob/vote_creator)
 	default_choices = SSmap_vote.get_valid_map_vote_choices()
 	. = ..()
 	if(!.)
@@ -54,9 +54,6 @@
 
 	return VOTE_AVAILABLE
 
-/datum/vote/map_vote/get_result_text(list/all_winners, real_winner, list/non_voters)
-	return null
-
 /datum/vote/map_vote/get_vote_result(list/non_voters)
 	// Even if we have default no vote off,
 	// if our default map is null for some reason, we shouldn't continue
@@ -74,22 +71,56 @@
 
 		if(their_preferred_map in choices)
 			choices[their_preferred_map] += 1
+			choices_by_ckey[non_voter_ckey] = their_preferred_map
 
 	return ..()
 
+/datum/vote/map_vote/get_result_text(list/all_winners, real_winner, list/non_voters)
+	var/title_text
+
+	if(override_question)
+		title_text = span_bold(override_question)
+	else
+		title_text = span_bold("[capitalize(name)] Vote")
+
+	var/returned_text = "Winner Selection: Simple"
+
+	var/total_votes = 0
+	for(var/map in choices)
+		total_votes += choices[map]
+
+	if(total_votes <= 0)
+		return span_bold("Vote Result: Inconclusive - No Votes!")
+
+	returned_text += "\n"
+	returned_text += "\nTotal Votes: [total_votes]"
+
+	if(display_statistics)
+		returned_text += "\n\nResults:"
+
+		for(var/map in choices)
+			var/direct_votes = choices[map]
+
+			// How many of this map's voters are carrying a pity bonus in,
+			// and how much, purely for admin/player visibility.
+			var/bonus_voters = 0
+			var/total_bonus_weight = 0
+
+			for(var/ckey in choices_by_ckey)
+				if(choices_by_ckey[ckey] != map)
+					continue
+				var/bonus = SSmap_vote.get_bonus_for(ckey, map)
+				if(bonus > 0)
+					bonus_voters++
+					total_bonus_weight += bonus
+
+			var/text = "[span_bold(map)]: [direct_votes] vote(s)"
+			if(bonus_voters)
+				text += " (+[total_bonus_weight] bonus from [bonus_voters] returning voter[bonus_voters == 1 ? "" : "s"])"
+
+			returned_text += "\n[text]"
+
+	return fieldset_block(title_text, returned_text, "boxed_message purple_box")
+
 /datum/vote/map_vote/finalize_vote(winning_option)
 	SSmap_vote.finalize_map_vote(src)
-/datum/controller/subsystem/map_vote/proc/get_valid_map_vote_choices()
-	var/list/choices = list()
-
-	for(var/map_id in config.maplist)
-		var/datum/map_config/cfg = config.maplist[map_id]
-
-		if(!cfg)
-			continue
-		if(!cfg.votable)
-			continue
-
-		choices += map_id
-
-	return choices

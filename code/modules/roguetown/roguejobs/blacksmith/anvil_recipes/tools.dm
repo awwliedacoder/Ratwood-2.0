@@ -326,6 +326,15 @@
 	created_item = /obj/item/rogueweapon/huntingknife/scissors/steel
 	i_type = "Tools"
 
+/datum/anvil_recipe/tools/steel/metalrepairkit
+	name = "Armor Plates (x2) (+1 Steel, +1 Iron, +1 Cured Leather)"
+	req_bar = /obj/item/ingot/steel
+	additional_items = list(/obj/item/ingot/steel, /obj/item/ingot/iron, /obj/item/natural/hide/cured)
+	created_item = /obj/item/repair_kit/metal
+	createditem_num = 2
+	craftdiff = 4 //Expert
+
+
 // --------- SILVER -----------
 
 /datum/anvil_recipe/tools/silver/cups
@@ -504,7 +513,7 @@
 //black steel tools
 
 /datum/anvil_recipe/tools/blacksteel/hammer
-	name = "Blacksteel hammer (+1 Stick)"
+	name = "Blacksteel Hammer (+1 Stick)"
 	additional_items = list(/obj/item/grown/log/tree/stick)
 	created_item = /obj/item/rogueweapon/hammer/blacksteel
 
@@ -516,6 +525,45 @@
 /datum/anvil_recipe/tools/blacksteel/tongs
 	name = "Blacksteel Tongs"
 	created_item = /obj/item/rogueweapon/tongs/blacksteel
+
+/datum/anvil_recipe/tools/blacksteel/handsaw
+	name = "Handsaw, Blacksteel (+1 Stick)"
+	additional_items = list(/obj/item/grown/log/tree/stick)
+	created_item = /obj/item/rogueweapon/handsaw/blacksteel
+
+/datum/anvil_recipe/tools/blacksteel/chisel
+	name = "Chisel, Blacksteel"
+	created_item = /obj/item/rogueweapon/chisel/blacksteel
+
+/datum/anvil_recipe/tools/blacksteel/thresher
+	name = "Thresher, Blacksteel (+1 Stick)"
+	additional_items = list(/obj/item/grown/log/tree/stick)
+	created_item = /obj/item/rogueweapon/thresher/blacksteel
+	i_type = "Tools"
+
+/datum/anvil_recipe/tools/blacksteel/hoe
+	name = "Hoe, Blacksteel (+2 Sticks)"
+	additional_items = list(/obj/item/grown/log/tree/stick,/obj/item/grown/log/tree/stick)
+	created_item = /obj/item/rogueweapon/hoe/blacksteel
+	i_type = "Tools"
+
+/datum/anvil_recipe/tools/blacksteel/pitchfork
+	name = "Pitchfork, Blacksteel (+2 Sticks)"
+	additional_items = list(/obj/item/grown/log/tree/stick,/obj/item/grown/log/tree/stick)
+	created_item = /obj/item/rogueweapon/pitchfork/blacksteel
+	i_type = "Tools"
+
+/datum/anvil_recipe/tools/blacksteel/sickle
+	name = "Sickle, Blacksteel (+1 Stick)"
+	additional_items = list(/obj/item/grown/log/tree/stick)
+	created_item = /obj/item/rogueweapon/sickle/blacksteel
+	i_type = "Tools"
+
+/datum/anvil_recipe/tools/blacksteel/shovel
+	name = "Shovel, Blacksteel (+2 Sticks)"
+	additional_items = list(/obj/item/grown/log/tree/stick, /obj/item/grown/log/tree/stick)
+	created_item = /obj/item/rogueweapon/shovel/blacksteel
+	i_type = "Tools"
 	
 // --------- HEARTBEAST TOOLS -----------
 /datum/anvil_recipe/tools/heartbeast_vials

@@ -76,7 +76,7 @@
 		var/mob/living/M = locate(href_list["heal_blood_add100"])
 		if(M && ishuman(M))
 			var/mob/living/carbon/human/H = M
-			H.blood_volume = min(H.blood_volume + 100, BLOOD_VOLUME_MAXIMUM)
+			H.set_blood_volume(min(H.get_blood_volume() + 100, BLOOD_VOLUME_MAXIMUM))
 			message_admins("[key_name_admin(usr)] added 100 blood to [key_name_admin(M)].")
 			log_admin("[key_name(usr)] added 100 blood to [key_name(M)].")
 			show_heal_panel(M)
@@ -86,7 +86,7 @@
 		var/mob/living/M = locate(href_list["heal_blood_add50"])
 		if(M && ishuman(M))
 			var/mob/living/carbon/human/H = M
-			H.blood_volume = min(H.blood_volume + 50, BLOOD_VOLUME_MAXIMUM)
+			H.set_blood_volume(min(H.get_blood_volume() + 50, BLOOD_VOLUME_MAXIMUM))
 			message_admins("[key_name_admin(usr)] added 50 blood to [key_name_admin(M)].")
 			log_admin("[key_name(usr)] added 50 blood to [key_name(M)].")
 			show_heal_panel(M)
@@ -96,7 +96,7 @@
 		var/mob/living/M = locate(href_list["heal_blood_sub50"])
 		if(M && ishuman(M))
 			var/mob/living/carbon/human/H = M
-			H.blood_volume = max(H.blood_volume - 50, 0)
+			H.set_blood_volume(max(H.get_blood_volume() - 50, 0))
 			message_admins("[key_name_admin(usr)] removed 50 blood from [key_name_admin(M)].")
 			log_admin("[key_name(usr)] removed 50 blood from [key_name(M)].")
 			show_heal_panel(M)
@@ -106,7 +106,7 @@
 		var/mob/living/M = locate(href_list["heal_blood_sub100"])
 		if(M && ishuman(M))
 			var/mob/living/carbon/human/H = M
-			H.blood_volume = max(H.blood_volume - 100, 0)
+			H.set_blood_volume(max(H.get_blood_volume() - 100, 0))
 			message_admins("[key_name_admin(usr)] removed 100 blood from [key_name_admin(M)].")
 			log_admin("[key_name(usr)] removed 100 blood from [key_name(M)].")
 			show_heal_panel(M)
@@ -116,9 +116,9 @@
 		var/mob/living/M = locate(href_list["heal_blood_set"])
 		if(M && ishuman(M))
 			var/mob/living/carbon/human/H = M
-			var/new_amount = input(usr, "Set blood volume to:", "Blood Volume", H.blood_volume) as num|null
+			var/new_amount = input(usr, "Set blood volume to:", "Blood Volume", H.get_blood_volume()) as num|null
 			if(new_amount != null)
-				H.blood_volume = clamp(new_amount, 0, BLOOD_VOLUME_MAXIMUM)
+				H.set_blood_volume(clamp(new_amount, 0, BLOOD_VOLUME_MAXIMUM))
 				message_admins("[key_name_admin(usr)] set [key_name_admin(M)]'s blood volume to [new_amount].")
 				log_admin("[key_name(usr)] set [key_name(M)]'s blood volume to [new_amount].")
 				show_heal_panel(M)
@@ -774,38 +774,41 @@
 		if(!M.client)
 			to_chat(usr, span_warning("[M] doesn't seem to have an active client."))
 			return
-		var/target_job = SSrole_class_handler.get_advclass_by_name(M.advjob)
-		var/datum/job/mob_job = SSjob.GetJob(M.mind.assigned_role)
-		if(M.mind)
-			if(mob_job)
-				mob_job.current_positions = max(0, mob_job.current_positions - 1)
-			if(target_job)
-				SSrole_class_handler.adjust_class_amount(target_job, -1)
-			M.mind.unknow_all_people()
-			for(var/datum/mind/MF in get_minds())
-				M.mind.become_unknown_to(MF)
-			for(var/datum/bounty/removing_bounty in GLOB.head_bounties)
-				if(removing_bounty.target == M.real_name)
-					GLOB.head_bounties -= removing_bounty
 		log_admin("[key_name(usr)] has sent [key_name(M)] back to the Lobby.")
-		GLOB.chosen_names -= M.real_name
-		if(!mob_job)
-			LAZYREMOVE(GLOB.actors_list[SSjob.bitflag_to_department(WANDERER, FALSE)], M.mobid)
-		else
-			LAZYREMOVE(GLOB.actors_list[SSjob.bitflag_to_department(mob_job.department_flag, mob_job.obsfuscated_job)], M.mobid)
-		LAZYREMOVE(GLOB.roleplay_ads, M.mobid)
-		SSdroning.kill_droning(M.client)
-		SSdroning.kill_loop(M.client)
-		SSdroning.kill_rain(M.client)
-
-		var/mob/dead/new_player/NP = new()
-		NP.ckey = M.ckey
 		if(living)
+			var/mob/living/carbon/human/H = M
+			if(!istype(H))
+				to_chat(usr, span_warning("Only human living mobs can be sent back to the lobby."))
+				return
+			var/delete_character = FALSE
 			if(alert(usr, "Would you like to also delete the living mob [key_name(M)]?", "Message", "Yes", "No") == "Yes")
 				log_admin("[key_name(usr)] has chosen to delete the [M] mob while sending the client to lobby.")
-				qdel(M)
+				delete_character = TRUE
+			H.admin_send_back_to_lobby(usr, delete_character)
 		else
+			SSdroning.kill_droning(M.client)
+			SSdroning.kill_loop(M.client)
+			SSdroning.kill_rain(M.client)
+			var/mob/dead/new_player/NP = new()
+			NP.ckey = M.ckey
 			qdel(M)
+
+	else if(href_list["ssd_sendbacktolobby"])
+		if(!check_rights(R_ADMIN))
+			return
+
+		var/mob/living/carbon/human/H = locate(href_list["ssd_sendbacktolobby"])
+		if(!istype(H))
+			to_chat(usr, span_warning("This can only be used on instances of type /mob/living/carbon/human."))
+			return
+		if(H.client || !H.last_logout_time)
+			to_chat(usr, span_warning("[H] is no longer in a deep slumber."))
+			return
+		if(alert(usr, "Fartravel slumbering [key_name(H)] and delete their character?", "Message", "Yes", "No") != "Yes")
+			return
+		log_admin("[key_name(usr)] has fartraveled slumbering [key_name(H)] after [DisplayTimeText(world.time - H.last_logout_time, 1)] in a deep slumber.")
+		message_admins(span_adminnotice("[key_name_admin(usr)] has fartraveled slumbering [key_name_admin(H)] after [DisplayTimeText(world.time - H.last_logout_time, 1)] in a deep slumber."))
+		H.admin_send_back_to_lobby(usr, TRUE)
 
 	else if(href_list["revive"])
 		if(!check_rights(R_ADMIN))
@@ -1092,7 +1095,7 @@
 	else if(href_list["remove_language"])
 		var/mob/M = locate(href_list["remove_language"])
 		var/datum/language/lang = text2path(href_list["language"])
-		M.remove_language(lang)
+		M.remove_language(lang, source = LANGUAGE_SOURCE_ALL)
 		message_admins(span_danger("Admin [key_name_admin(usr)] removed [lang] from [key_name_admin(M)]"))
 		log_admin("[usr] removed [lang] to [M].")
 		show_player_panel_next(M, "languages")
@@ -1202,7 +1205,17 @@
 			to_chat(usr, "This can only be used on instances of type /mob.")
 			return
 
-		show_individual_logging_panel(M, href_list["log_src"], href_list["log_type"])
+		//a highlight toggle pinged from the POV page's javascript, record it and do not re-render
+		if(href_list["povhl"])
+			usr.client.toggle_pov_highlight(M, href_list["log_src"], href_list["pov_mode"], href_list["povhl"])
+			return
+
+		//same for the filter checkboxes, so a page turn keeps what was filtered out
+		if(href_list["povfilter"])
+			usr.client.set_pov_filters(M, href_list["log_src"], href_list["pov_mode"], href_list["povfilter"])
+			return
+
+		show_individual_logging_panel(M, href_list["log_src"], href_list["log_type"] || INDIVIDUAL_ATTACK_LOG, text2num(href_list["log_page"]) || 1, href_list["pov_mode"], href_list["pov_paging"], text2num(href_list["page_len"]) || 0, text2num(href_list["pov_tail"]), href_list["pov_focus"], href_list["pov_fresh"], text2num(href_list["pov_at"]))
 	else if(href_list["languagemenu"])
 		if(!check_rights(R_ADMIN))
 			return
@@ -1563,7 +1576,7 @@
 			return
 		var/mob/M = locate(href_list["mob"]) in GLOB.mob_list
 		var/client/mob_client = M.client
-		var/amt2change = input("How much to modify the PQ by? (20 to -20, or 0 to just add a note)") as null|num
+		var/amt2change = input("How much to modify the PQ by? ([!check_rights(R_BAN,0) ? "-20 to 20, or " : ""]0 to just add a note)") as null|num
 		if(!check_rights(R_BAN,0))
 			amt2change = CLAMP(amt2change, -20, 20)
 		var/raisin = stripped_input("State a short reason for this change", "Game Master", "", null)

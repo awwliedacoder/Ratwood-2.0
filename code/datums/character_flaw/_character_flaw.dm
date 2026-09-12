@@ -1,6 +1,6 @@
 /// Assoc list mapping /datum/charflaw typepaths to detached instances. Mainly for getting stuff like names from the typepath.
 /// Initialized at runtime. Should remain stable if nobody's calling procs on New().
-GLOBAL_LIST_EMPTY(charflaw_singletons)
+GLOBAL_LIST_INIT(charflaw_singletons, init_charflaw_singletons())
 
 /// Associative list mapping the "menu name" of each vice in the list to its typepath. This list is all of the vices you can choose. 
 /// Used primarily for adding a vice, but also for randomly picking a vice from the selectable space. Try pick_assoc().
@@ -21,6 +21,7 @@ GLOBAL_LIST_INIT(character_flaws, list(
 	"Marked for Death"=/datum/charflaw/assassintarget,
 	"Marked by Gnolls"=/datum/charflaw/hunted,
 	"Isolationist"=/datum/charflaw/isolationist,
+	"Caffiend"=/datum/charflaw/addiction/caffiend,
 	"Junkie"=/datum/charflaw/addiction/junkie,
 	"Lawless"=/datum/charflaw/lawless,
 	"Marked by Baotha" =/datum/charflaw/marked_by_baotha,
@@ -245,7 +246,9 @@ GLOBAL_LIST_INIT(character_flaws, list(
 			continue
 		if(!nearby.can_smell())
 			continue
-		if(!HAS_TRAIT(nearby, TRAIT_NOSTINK))
+		if(HAS_TRAIT(nearby, TRAIT_NOSTINK))
+			continue
+		if(HAS_TRAIT(nearby, TRAIT_NOBREATH))
 			continue
 		if(!nearby.has_stress_event(/datum/stressevent/stinky_aura))
 			to_chat(nearby, span_warning("Something nearby reeks."))
@@ -612,7 +615,7 @@ GLOBAL_LIST_INIT(character_flaws, list(
 	if(user.advsetup)
 		addtimer(CALLBACK(src, PROC_REF(unintelligible_apply), user), 5 SECONDS)
 		return
-	user.remove_language(/datum/language/common)
+	user.remove_language(/datum/language/common, source = LANGUAGE_SOURCE_ALL)
 	user.adjust_skillrank(/datum/skill/misc/reading, -6, TRUE)
 	user.adjust_triumphs(1)
 
