@@ -62,6 +62,8 @@
 #define TRAIT_DWARVEN_CHEF "Dwarven Chef"
 /// lets you see noble gossip
 #define TRAIT_GOSSIPER "Gossiper"
+//lets you ''drain'' stats out of others! ((you do not get them.))
+#define TRAIT_STATDRAINER "Stat Drainer"
 #define INSPIRING_MUSICIAN "Inspiring Musician" // unlocks bardic inspiration stuff
 #define TRAIT_NOFALLDAMAGE1 "Fall Damage Reduction"
 #define TRAIT_NOFALLDAMAGE2 "Fall Damage Immunity"

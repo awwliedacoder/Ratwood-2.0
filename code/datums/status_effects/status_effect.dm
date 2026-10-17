@@ -160,6 +160,17 @@
 		return
 	duration = world.time + original_duration
 
+	var/original_duration = duration
+	var/list/original_reduction = effectedstats
+	var/list/new_reduction = list()
+
+	if(original_reduction.len > 0)
+			VALUE *= 2
+			new_reduction[STAT] = VALUE
+		effectedstats = new_reduction
+
+	duration = world.time + (original_duration * 2)
+
 //clickdelay/nextmove modifiers!
 /datum/status_effect/proc/nextmove_modifier()
 	return 1
@@ -229,18 +240,25 @@
 
 	// ID CHECK
 	var/datum/status_effect/current = status_effects_by_id[effect_id]
-
 	if(current && current.status_type)
-		if(current.status_type == STATUS_EFFECT_REPLACE)
-			// Remove old create one
-			current.be_replaced(arglist(arguments))
-		else if(current.status_type == STATUS_EFFECT_REFRESH)
-			// Refresh update current's timer if we already have the effect
-			current.refresh(arglist(arguments))
-			return
-		else
-			// STATUS_EFFECT_UNIQUE we need only 1 per time
-			return
+		switch(current.status_type)
+			if(STATUS_EFFECT_REPLACE)
+				// Remove old create one
+				current.be_replaced(arglist(arguments))
+
+			if(STATUS_EFFECT_MULTIPLY)
+				// multiply the time and affected stat boons
+				current.multiply(arglist(arguments))
+				return
+
+			if(STATUS_EFFECT_REFRESH)
+				// Refresh update current's timer if we already have the effect
+				current.refresh(arglist(arguments))
+				return
+
+			else
+				// STATUS_EFFECT_UNIQUE we need only 1 per time
+				return
 
 	// No old effect or its been removed (apply brand new)
 	var/datum/status_effect/new_effect = new effect(arguments)

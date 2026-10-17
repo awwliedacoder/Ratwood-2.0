@@ -9,6 +9,8 @@
 
 #define STATUS_EFFECT_REFRESH 3 // if it only allows one, and new instances just instead refresh the timer
 
+#define STATUS_EFFECT_MULTIPLY 4
+
 ///////////
 // BUFFS //
 ///////////

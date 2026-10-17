@@ -21,6 +21,12 @@
 	added_traits = list(TRAIT_NOSTINK)
 	incompatible_traits = list(TRAIT_NOSTINK)
 
+/datum/quirk/luxstealer
+	name = "Lux Siphoning"
+	desc = "I am skilled in the art of extracting a person's lux for my own gain."
+	warning_text = "This quirk does not allow you to gain stats of others!"
+	added_traits = list(TRAIT_STATDRAINER)
+
 /datum/quirk/disgracednoble
 	name = "Disgraced Noble"
 	desc = "I was a scion of a noble house... long ago. Now I am a commoner, and my family name is a source of shame."

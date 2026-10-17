@@ -595,6 +595,23 @@
 		drip.duration -= 6 SECONDS
 	return TRUE
 
+/datum/sex_controller/proc/apply_stat_drain(mob/living/carbon/human/target)
+	if(target?.client?.prefs?.stat_drain && HAS_TRAIT(user, TRAIT_STATDRAINER) && user?.client?.prefs?.stat_drain)
+		to_chat(target, span_love("[user]'s eyes glow with pure ecstasy as [user.p_they(TRUE)] drinks in your strength, and you feel yourself growing <b>weaker</b>."))
+		target.apply_status_effect(/datum/status_effect/debuff/fucked_out_of_your_mind)
+
+/datum/status_effect/debuff/fucked_out_of_your_mind
+	id = "fucked_out_of_your_mind"
+	duration = 5 MINUTES
+	status_type = STATUS_EFFECT_MULTIPLY
+	alert_type = /atom/movable/screen/alert/status_effect/debuff/fucked_out_of_your_mind
+	effectedstats = list(STATKEY_INT = -1, STATKEY_STR = -1, STATKEY_CON = -1, STATKEY_WIL = -1)
+
+/atom/movable/screen/alert/status_effect/debuff/fucked_out_of_your_mind
+	name = "Siphoned"
+	desc = "I feel so much weaker-- what is happening?"
+	icon_state = "fuckedoutofmind"
+
 /datum/status_effect/facial
 	id = "facial"
 	alert_type = null // don't show an alert on screen

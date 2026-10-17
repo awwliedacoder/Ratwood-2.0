@@ -140,6 +140,7 @@
 		list("id" = "animal_emotes", "label" = "Animal Noise Emotes", "enabled" = !!(!owner.prefs.mute_animal_emotes), "desc" = "Play animal emote sound effects."),
 		list("id" = "erp_panel", "label" = "Enable ERP Panel Interactions", "enabled" = !!owner.prefs.sexable, "desc" = "Allow others to use ERP panel interactions on you."),
 		list("id" = "erp_visuals", "label" = "Enable ERP Visual Effects", "enabled" = !!owner.prefs.erp_visuals, "desc" = "Enable visual effects like hearts and screen overlays during ERP."),
+		list("id" = "stat_drain", "label" = "Enable Stat Drain Mechanics", "enabled" = !!owner.prefs.stat_drain, "desc" = "Allow others to fatigue your combat-statistics during ERP."),
 		list("id" = "chastity", "label" = "Enable Chastity Content", "enabled" = !!owner.prefs.chastenable, "desc" = "Show and allow chastity-related content."),
 		list("id" = "permanent_binding", "label" = "Enable Permanent Binding", "enabled" = (owner.prefs.chastity_hardmode == CHASTITY_HARDMODE_ENABLED), "desc" = "Enable irreversible key-only chastity lock behavior."),
 		list("id" = "extreme_erp", "label" = "Enable Extreme ERP Content", "enabled" = !!owner.prefs.extreme_erp, "desc" = "Allow extreme ERP content categories."),
@@ -270,6 +271,8 @@
 				owner.toggle_descriptor_color()
 			if("cursed_collars")
 				owner.toggle_cursed_collars()
+			if("stat_drain")
+				owner.toggle_stat_drain()
 			if("voting_popup")
 				owner.toggle_voting_popup()
 		SStgui.update_uis(src)
@@ -554,6 +557,18 @@
 			if(hascall(src, "modular_handle_extreme_erp_toggle_disable"))
 				call(src, "modular_handle_extreme_erp_toggle_disable")()
 			to_chat(src, "Extreme ERP content disabled in the ERP panel.")
+
+/client/verb/toggle_stat_drain()
+	set category = "Options"
+	set name = "Toggle Stat Drain"
+	set hidden = 1
+	if(prefs)
+		prefs.stat_drain = !prefs.stat_drain
+		prefs.save_preferences()
+		if(prefs.stat_drain)
+			to_chat(src, "You can now be weakened during sex!")
+		else
+			to_chat(src, "You can no longered b weakened during sex!")
 
 /client/verb/toggle_facial_brands()
 	set category = "Options"

@@ -134,6 +134,8 @@ GLOBAL_LIST_EMPTY(chosen_names)
 	var/descriptor_color = FALSE
 	/// If a cursed collar can be equipped to them at all
 	var/cursed_collarable = FALSE
+	// if toggled you can be sucked dry of your willpower and con, and strenght, and or INT !! woe ..
+	var/stat_drain = FALSE
 	var/voting_popup = TRUE
 	var/compliance_notifs = TRUE
 	var/skillcap_notifs = TRUE
